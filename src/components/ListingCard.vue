@@ -52,12 +52,20 @@ const handleBooking = () => {
           <span class="text-2xl font-bold text-gray-900">{{ listing.price }}</span>
           <span class="text-gray-600 text-sm"> €/nuit</span>
         </div>
-        <button
-          @click="handleViewDetails"
-          class="px-4 py-2 bg-pink-500 text-white rounded-lg font-medium hover:bg-pink-600 transition"
-        >
-          Voir
-        </button>
+        <div class="flex gap-2">
+          <button
+            @click="handleViewDetails"
+            class="px-4 py-2 bg-white border border-pink-500 text-pink-500 rounded-lg font-medium hover:bg-pink-50 transition"
+          >
+            Voir
+          </button>
+          <button
+            @click="handleBooking"
+            class="px-4 py-2 bg-pink-500 text-white rounded-lg font-medium hover:bg-pink-600 transition"
+          >
+            Réserver
+          </button>
+        </div>
       </div>
     </div>
   </div>
