@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useListingsStore } from '@/stores/listings'
 import { useAuthStore } from '@/stores/auth'
@@ -11,6 +11,14 @@ const authStore = useAuthStore()
 
 const listingId = parseInt(route.params.id as string)
 const listing = computed(() => listingsStore.getListingById(listingId))
+const selectedImageIndex = ref(0)
+
+const displayImages = computed(() => {
+  if (listing.value?.images && listing.value.images.length > 0) {
+    return listing.value.images
+  }
+  return listing.value?.image ? [listing.value.image] : []
+})
 
 const handleBookNow = () => {
   if (!authStore.isLoggedIn) {
@@ -31,8 +39,29 @@ onMounted(() => {
   <div v-if="listing" class="min-h-screen bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Image Gallery -->
-      <div class="mb-8 rounded-lg overflow-hidden h-96 bg-gray-200">
-        <img :src="listing.image" :alt="listing.title" class="w-full h-full object-cover" />
+      <div class="mb-8">
+        <div class="rounded-lg overflow-hidden h-96 bg-gray-200 mb-4">
+          <img
+            :src="displayImages[selectedImageIndex]"
+            :alt="listing.title"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div class="grid grid-cols-5 gap-2">
+          <button
+            v-for="(image, index) in displayImages"
+            :key="index"
+            @click="selectedImageIndex = index"
+            :class="[
+              'rounded-lg overflow-hidden h-20 border-2 transition',
+              selectedImageIndex === index
+                ? 'border-pink-500'
+                : 'border-gray-300 hover:border-gray-400'
+            ]"
+          >
+            <img :src="image" :alt="`Image ${index + 1}`" class="w-full h-full object-cover" />
+          </button>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -41,14 +70,30 @@ onMounted(() => {
           <!-- Title and Location -->
           <div class="mb-8">
             <h1 class="text-4xl font-bold text-gray-900 mb-2">{{ listing.title }}</h1>
-            <div class="flex items-center gap-4 text-lg text-gray-600">
-              <span class="flex items-center gap-1"> 📍 {{ listing.city }} </span>
-              <span class="flex items-center gap-1"> ⭐ {{ listing.rating }} </span>
+            <div class="flex items-center gap-4 text-lg text-gray-600 mb-4">
+              <span class="flex items-center gap-1">📍 {{ listing.city }}</span>
+              <span class="flex items-center gap-1">⭐ {{ listing.rating }}</span>
+            </div>
+            <p class="text-gray-700">📍 {{ listing.address }}</p>
+          </div>
+
+          <!-- Owner Information -->
+          <div class="bg-gray-50 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">Propriétaire du logement</h2>
+            <div class="space-y-3">
+              <div>
+                <p class="text-sm text-gray-600">Nom</p>
+                <p class="text-lg font-semibold text-gray-900">{{ listing.ownerName }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-600">Numéro de téléphone</p>
+                <p class="text-lg font-semibold text-gray-900">{{ listing.ownerPhone }}</p>
+              </div>
             </div>
           </div>
 
           <!-- Amenities -->
-          <div class="grid grid-cols-2 gap-6 mb-8 pb-8 border-b border-gray-200">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8 pb-8 border-b border-gray-200">
             <div class="flex items-center gap-3">
               <div class="text-3xl">🛏️</div>
               <div>
@@ -61,6 +106,20 @@ onMounted(() => {
               <div>
                 <p class="text-sm text-gray-600">Salles de bain</p>
                 <p class="text-xl font-semibold text-gray-900">{{ listing.baths }}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-3xl">🍳</div>
+              <div>
+                <p class="text-sm text-gray-600">Cuisines</p>
+                <p class="text-xl font-semibold text-gray-900">{{ listing.kitchens || 1 }}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-3xl">🛋️</div>
+              <div>
+                <p class="text-sm text-gray-600">Salons</p>
+                <p class="text-xl font-semibold text-gray-900">{{ listing.salons || 1 }}</p>
               </div>
             </div>
           </div>
@@ -84,7 +143,7 @@ onMounted(() => {
                 <span class="text-gray-700">Cuisine équipée</span>
               </div>
               <div class="flex items-center gap-3">
-                <span class="text-2xl">🌡���</span>
+                <span class="text-2xl">🌡️</span>
                 <span class="text-gray-700">Climatisation</span>
               </div>
               <div class="flex items-center gap-3">
