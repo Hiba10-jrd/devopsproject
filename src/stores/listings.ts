@@ -7,10 +7,16 @@ export interface Listing {
   city: string
   price: number
   image: string
+  images?: string[]
   beds: number
   baths: number
+  kitchens?: number
+  salons?: number
   description: string
   rating: number
+  ownerName?: string
+  ownerPhone?: string
+  address?: string
 }
 
 export interface Booking {
