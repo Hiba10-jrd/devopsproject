@@ -22,10 +22,22 @@
       "city": "Casablanca",
       "price": 450,
       "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1470932579955-7b429ee3a315?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&h=600&fit=crop"
+      ],
       "beds": 2,
       "baths": 1,
+      "kitchens": 1,
+      "salons": 1,
       "description": "Appartement lumineux proche du centre-ville avec une vue magnifique sur la médina.",
-      "rating": 4.8
+      "rating": 4.8,
+      "ownerName": "Ahmed Ben Ali",
+      "ownerPhone": "+212 6 12 34 56 78",
+      "address": "123 Boulevard Mohammed V, Casablanca 20000, Maroc"
     },
     {
       "id": 2,
@@ -33,10 +45,22 @@
       "city": "Marrakech",
       "price": 850,
       "image": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1470932579955-7b429ee3a315?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&h=600&fit=crop"
+      ],
       "beds": 4,
       "baths": 3,
+      "kitchens": 1,
+      "salons": 2,
       "description": "Villa spacieuse avec piscine, jardin paysagé et accès direct aux médinas.",
-      "rating": 4.9
+      "rating": 4.9,
+      "ownerName": "Fatima El Mansouri",
+      "ownerPhone": "+212 6 23 45 67 89",
+      "address": "456 Avenue de la Menara, Marrakech 40000, Maroc"
     },
     {
       "id": 3,
@@ -44,10 +68,22 @@
       "city": "Fès",
       "price": 280,
       "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1470932579955-7b429ee3a315?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&h=600&fit=crop"
+      ],
       "beds": 1,
       "baths": 1,
+      "kitchens": 1,
+      "salons": 1,
       "description": "Petit studio cosy dans la vieille médina, idéal pour les voyageurs solo.",
-      "rating": 4.6
+      "rating": 4.6,
+      "ownerName": "Muhammad Al-Fasi",
+      "ownerPhone": "+212 6 34 56 78 90",
+      "address": "Medina Fès, Quartier Andalous, Fès 30000, Maroc"
     },
     {
       "id": 4,
@@ -55,10 +91,22 @@
       "city": "Casablanca",
       "price": 1200,
       "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1470932579955-7b429ee3a315?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&h=600&fit=crop"
+      ],
       "beds": 3,
       "baths": 2,
+      "kitchens": 1,
+      "salons": 2,
       "description": "Penthouse moderne avec terrasse panoramique et vue sur l'océan.",
-      "rating": 5.0
+      "rating": 5.0,
+      "ownerName": "Karim Zaki",
+      "ownerPhone": "+212 6 45 67 89 01",
+      "address": "999 Ocean Plaza, Boulevard de la Corniche, Casablanca 20100, Maroc"
     },
     {
       "id": 5,
@@ -66,10 +114,22 @@
       "city": "Marrakech",
       "price": 650,
       "image": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&h=600&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1470932579955-7b429ee3a315?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop"
+      ],
       "beds": 2,
       "baths": 2,
+      "kitchens": 1,
+      "salons": 1,
       "description": "Riad authentique avec cour intérieure, fontaine et décoration traditionnelle.",
-      "rating": 4.7
+      "rating": 4.7,
+      "ownerName": "Noor El Amrani",
+      "ownerPhone": "+212 6 56 78 90 12",
+      "address": "Riad Zitoun Al Qadim, Medina Marrakech 40000, Maroc"
     },
     {
       "id": 6,
@@ -77,10 +137,22 @@
       "city": "Agadir",
       "price": 380,
       "image": "https://images.unsplash.com/photo-1470932579955-7b429ee3a315?w=800&h=600&fit=crop",
+      "images": [
+        "https://images.unsplash.com/photo-1470932579955-7b429ee3a315?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&h=600&fit=crop"
+      ],
       "beds": 2,
       "baths": 1,
+      "kitchens": 1,
+      "salons": 1,
       "description": "Maison ensoleillée près de la plage, idéale pour les familles.",
-      "rating": 4.5
+      "rating": 4.5,
+      "ownerName": "Hassan Boutaleb",
+      "ownerPhone": "+212 6 67 89 01 23",
+      "address": "Plage Agadir, Résidence Océan Bleu, Agadir 80000, Maroc"
     }
   ],
   "bookings": []
