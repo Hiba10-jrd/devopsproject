@@ -56,7 +56,7 @@ onMounted(() => {
               'rounded-lg overflow-hidden h-20 border-2 transition',
               selectedImageIndex === index
                 ? 'border-pink-500'
-                : 'border-gray-300 hover:border-gray-400'
+                : 'border-gray-300 hover:border-gray-400',
             ]"
           >
             <img :src="image" :alt="`Image ${index + 1}`" class="w-full h-full object-cover" />

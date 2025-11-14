@@ -52,7 +52,7 @@ const handleConfirmBooking = async () => {
   }
 
   if (!agreeTerms.value) {
-    alert('Veuillez accepter les conditions d\'utilisation')
+    alert("Veuillez accepter les conditions d'utilisation")
     return
   }
 
@@ -73,7 +73,12 @@ const handleConfirmBooking = async () => {
       listingTitle: listing.value.title,
     })
 
-    alert('Réservation confirmée avec succès!\n\nNuméro de confirmation: ' + booking.id + '\n\nVous pouvez maintenant contacter le propriétaire au: ' + listing.value.ownerPhone)
+    alert(
+      'Réservation confirmée avec succès!\n\nNuméro de confirmation: ' +
+        booking.id +
+        '\n\nVous pouvez maintenant contacter le propriétaire au: ' +
+        listing.value.ownerPhone,
+    )
     router.push('/')
   } catch (error) {
     console.error('Booking failed:', error)
@@ -145,7 +150,9 @@ onMounted(() => {
               </div>
 
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre de voyageurs</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-2"
+                  >Nombre de voyageurs</label
+                >
                 <input
                   v-model.number="guests"
                   type="number"
@@ -158,7 +165,9 @@ onMounted(() => {
 
             <!-- Guest Information -->
             <div class="mb-8 pb-8 border-b border-gray-200">
-              <h3 class="text-xl font-semibold text-gray-900 mb-4">Vos informations personnelles</h3>
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                Vos informations personnelles
+              </h3>
               <div class="space-y-4">
                 <div>
                   <label class="block text-sm font-semibold text-gray-700 mb-2">Nom complet</label>
@@ -179,7 +188,9 @@ onMounted(() => {
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">Numéro de téléphone *</label>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2"
+                    >Numéro de téléphone *</label
+                  >
                   <input
                     v-model="guestPhone"
                     type="tel"
@@ -188,7 +199,9 @@ onMounted(() => {
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold text-gray-700 mb-2">Message au propriétaire (optionnel)</label>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2"
+                    >Message au propriétaire (optionnel)</label
+                  >
                   <textarea
                     v-model="guestNotes"
                     placeholder="Parlez-nous de vous, vos demandes spéciales..."
@@ -203,7 +216,10 @@ onMounted(() => {
             <div class="mb-8 pb-8 border-b border-gray-200">
               <h3 class="text-xl font-semibold text-gray-900 mb-4">Méthode de paiement</h3>
               <div class="space-y-3">
-                <div class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-pink-500 cursor-pointer transition" :class="{ 'border-pink-500 bg-pink-50': paymentMethod === 'cash' }">
+                <div
+                  class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-pink-500 cursor-pointer transition"
+                  :class="{ 'border-pink-500 bg-pink-50': paymentMethod === 'cash' }"
+                >
                   <input
                     id="cash"
                     v-model="paymentMethod"
@@ -213,12 +229,15 @@ onMounted(() => {
                   />
                   <label for="cash" class="ml-3 flex-1 cursor-pointer">
                     <p class="font-semibold text-gray-900">Paiement en espèces</p>
-                    <p class="text-sm text-gray-600">Payez le propriétaire directement à l'arrivée</p>
+                    <p class="text-sm text-gray-600">
+                      Payez le propriétaire directement à l'arrivée
+                    </p>
                   </label>
                 </div>
               </div>
               <p class="text-sm text-gray-500 mt-4">
-                <strong>Note:</strong> Vous recevrez les coordonnées du propriétaire après confirmation. Le paiement s'effectuera directement avec le propriétaire.
+                <strong>Note:</strong> Vous recevrez les coordonnées du propriétaire après
+                confirmation. Le paiement s'effectuera directement avec le propriétaire.
               </p>
             </div>
 
@@ -226,17 +245,19 @@ onMounted(() => {
             <div class="mb-8 pb-8 border-b border-gray-200 bg-blue-50 p-4 rounded-lg">
               <h3 class="text-lg font-semibold text-gray-900 mb-3">Informations du propriétaire</h3>
               <div class="space-y-2">
-                <p class="text-gray-700">
-                  <strong>Nom:</strong> {{ listing.ownerName }}
-                </p>
+                <p class="text-gray-700"><strong>Nom:</strong> {{ listing.ownerName }}</p>
                 <p class="text-gray-700">
                   <strong>Téléphone:</strong>
-                  <a :href="'tel:' + listing.ownerPhone" class="text-pink-600 hover:text-pink-700 font-semibold">
+                  <a
+                    :href="'tel:' + listing.ownerPhone"
+                    class="text-pink-600 hover:text-pink-700 font-semibold"
+                  >
                     {{ listing.ownerPhone }}
                   </a>
                 </p>
                 <p class="text-sm text-gray-600 mt-2">
-                  Vous pourrez contacter le propriétaire directement après la confirmation de votre réservation.
+                  Vous pourrez contacter le propriétaire directement après la confirmation de votre
+                  réservation.
                 </p>
               </div>
             </div>
@@ -250,7 +271,8 @@ onMounted(() => {
                 class="mt-1 w-4 h-4 accent-pink-500 rounded cursor-pointer"
               />
               <label for="terms" class="text-sm text-gray-600 cursor-pointer">
-                J'accepte les conditions d'utilisation et les règles de la maison. Je comprends que le paiement s'effectuera en espèces avec le propriétaire.
+                J'accepte les conditions d'utilisation et les règles de la maison. Je comprends que
+                le paiement s'effectuera en espèces avec le propriétaire.
               </label>
             </div>
 
@@ -272,8 +294,14 @@ onMounted(() => {
 
             <div v-if="numberOfNights > 0" class="space-y-3 mb-4 pb-4 border-b border-gray-200">
               <div class="flex justify-between">
-                <span class="text-gray-700">{{ listing.price }}€ × {{ numberOfNights }} nuit{{ numberOfNights > 1 ? 's' : '' }}</span>
-                <span class="font-semibold text-gray-900">{{ listing.price * numberOfNights }}€</span>
+                <span class="text-gray-700"
+                  >{{ listing.price }}€ × {{ numberOfNights }} nuit{{
+                    numberOfNights > 1 ? 's' : ''
+                  }}</span
+                >
+                <span class="font-semibold text-gray-900"
+                  >{{ listing.price * numberOfNights }}€</span
+                >
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-700">Frais de nettoyage</span>
