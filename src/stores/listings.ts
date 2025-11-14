@@ -27,6 +27,12 @@ export interface Booking {
   checkOutDate: string
   totalPrice: number
   createdAt: string
+  guestPhone?: string
+  guestNotes?: string
+  paymentMethod?: string
+  ownerName?: string
+  ownerPhone?: string
+  listingTitle?: string
 }
 
 export const useListingsStore = defineStore('listings', () => {
