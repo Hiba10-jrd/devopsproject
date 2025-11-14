@@ -32,11 +32,7 @@ onMounted(() => {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Image Gallery -->
       <div class="mb-8 rounded-lg overflow-hidden h-96 bg-gray-200">
-        <img
-          :src="listing.image"
-          :alt="listing.title"
-          class="w-full h-full object-cover"
-        />
+        <img :src="listing.image" :alt="listing.title" class="w-full h-full object-cover" />
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -46,12 +42,8 @@ onMounted(() => {
           <div class="mb-8">
             <h1 class="text-4xl font-bold text-gray-900 mb-2">{{ listing.title }}</h1>
             <div class="flex items-center gap-4 text-lg text-gray-600">
-              <span class="flex items-center gap-1">
-                📍 {{ listing.city }}
-              </span>
-              <span class="flex items-center gap-1">
-                ⭐ {{ listing.rating }}
-              </span>
+              <span class="flex items-center gap-1"> 📍 {{ listing.city }} </span>
+              <span class="flex items-center gap-1"> ⭐ {{ listing.rating }} </span>
             </div>
           </div>
 
@@ -119,14 +111,18 @@ onMounted(() => {
                   <span class="font-semibold text-gray-900">Marie L.</span>
                   <span class="text-yellow-400">★★★★★</span>
                 </div>
-                <p class="text-gray-700">Superbe logement, très propre et confortable. L'accueil a été parfait!</p>
+                <p class="text-gray-700">
+                  Superbe logement, très propre et confortable. L'accueil a été parfait!
+                </p>
               </div>
               <div class="p-4 bg-gray-50 rounded-lg">
                 <div class="flex items-center gap-2 mb-2">
                   <span class="font-semibold text-gray-900">Pierre T.</span>
                   <span class="text-yellow-400">★★★★☆</span>
                 </div>
-                <p class="text-gray-700">Très bon séjour. L'emplacement est idéal pour explorer la région.</p>
+                <p class="text-gray-700">
+                  Très bon séjour. L'emplacement est idéal pour explorer la région.
+                </p>
               </div>
             </div>
           </div>

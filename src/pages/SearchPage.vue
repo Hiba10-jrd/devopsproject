@@ -97,13 +97,18 @@ onMounted(() => {
                   />
                 </div>
               </div>
-              <div class="mt-2 text-sm text-gray-600">
-                Entre {{ minPrice }}€ et {{ maxPrice }}€
-              </div>
+              <div class="mt-2 text-sm text-gray-600">Entre {{ minPrice }}€ et {{ maxPrice }}€</div>
             </div>
 
             <button
-              @click="() => { searchCity = ''; minPrice = 0; maxPrice = 5000; applyFilters() }"
+              @click="
+                () => {
+                  searchCity = ''
+                  minPrice = 0
+                  maxPrice = 5000
+                  applyFilters()
+                }
+              "
               class="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
             >
               Réinitialiser les filtres
@@ -115,26 +120,29 @@ onMounted(() => {
         <div class="lg:col-span-3">
           <div class="mb-6">
             <h1 class="text-3xl font-bold text-gray-900">
-              {{ filteredListings.length }} logement{{ filteredListings.length !== 1 ? 's' : '' }} trouvé{{ filteredListings.length !== 1 ? 's' : '' }}
+              {{ filteredListings.length }} logement{{
+                filteredListings.length !== 1 ? 's' : ''
+              }}
+              trouvé{{ filteredListings.length !== 1 ? 's' : '' }}
             </h1>
             <p class="text-gray-600 mt-2">
               <span v-if="searchCity">à {{ searchCity }}</span>
               <span v-if="searchCity && (minPrice > 0 || maxPrice < 5000)"> •</span>
-              <span v-if="minPrice > 0 || maxPrice < 5000"> Entre {{ minPrice }}€ et {{ maxPrice }}€ par nuit</span>
+              <span v-if="minPrice > 0 || maxPrice < 5000">
+                Entre {{ minPrice }}€ et {{ maxPrice }}€ par nuit</span
+              >
             </p>
           </div>
 
           <div v-if="filteredListings.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <ListingCard
-              v-for="listing in filteredListings"
-              :key="listing.id"
-              :listing="listing"
-            />
+            <ListingCard v-for="listing in filteredListings" :key="listing.id" :listing="listing" />
           </div>
           <div v-else class="bg-white rounded-lg shadow p-12 text-center">
             <div class="text-6xl mb-4">🔍</div>
             <h3 class="text-2xl font-semibold text-gray-900 mb-2">Aucun logement trouvé</h3>
-            <p class="text-gray-600">Essayez d'ajuster vos filtres pour trouver plus de logements</p>
+            <p class="text-gray-600">
+              Essayez d'ajuster vos filtres pour trouver plus de logements
+            </p>
           </div>
         </div>
       </div>

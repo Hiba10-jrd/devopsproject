@@ -56,12 +56,16 @@ const handleKeydown = (e: KeyboardEvent) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-pink-50 to-rose-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div
+    class="min-h-screen bg-gradient-to-br from-pink-50 to-rose-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+  >
     <div class="w-full max-w-md">
       <div class="bg-white rounded-lg shadow-lg p-8">
         <!-- Logo -->
         <div class="flex justify-center mb-8">
-          <div class="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg">
+          <div
+            class="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg"
+          >
             <span class="text-white font-bold text-2xl">✕</span>
           </div>
         </div>
@@ -138,13 +142,14 @@ const handleKeydown = (e: KeyboardEvent) => {
             :disabled="isLoading"
             class="w-full px-4 py-3 bg-pink-500 text-white rounded-lg font-bold hover:bg-pink-600 transition disabled:opacity-50 disabled:cursor-not-allowed mt-6"
           >
-            {{ isLoading ? 'Inscription en cours...' : 'S\'inscrire' }}
+            {{ isLoading ? 'Inscription en cours...' : "S'inscrire" }}
           </button>
         </form>
 
         <!-- Terms -->
         <p class="text-xs text-gray-500 text-center mt-4">
-          En vous inscrivant, vous acceptez nos conditions d'utilisation et notre politique de confidentialité.
+          En vous inscrivant, vous acceptez nos conditions d'utilisation et notre politique de
+          confidentialité.
         </p>
 
         <!-- Login Link -->

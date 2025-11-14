@@ -38,7 +38,7 @@ const handleConfirmBooking = async () => {
   }
 
   if (new Date(checkInDate.value) >= new Date(checkOutDate.value)) {
-    alert('La date de départ doit être après la date d\'arrivée')
+    alert("La date de départ doit être après la date d'arrivée")
     return
   }
 
@@ -85,11 +85,18 @@ onMounted(() => {
             <!-- Listing Summary -->
             <div class="mb-8 pb-8 border-b border-gray-200">
               <div class="flex gap-4">
-                <img :src="listing.image" :alt="listing.title" class="w-20 h-20 rounded-lg object-cover" />
+                <img
+                  :src="listing.image"
+                  :alt="listing.title"
+                  class="w-20 h-20 rounded-lg object-cover"
+                />
                 <div>
                   <h2 class="text-xl font-semibold text-gray-900">{{ listing.title }}</h2>
                   <p class="text-gray-600">{{ listing.city }}</p>
-                  <p class="text-sm text-gray-500 mt-2">{{ listing.beds }} lit{{ listing.beds > 1 ? 's' : '' }} • {{ listing.baths }} salle{{ listing.baths > 1 ? 's' : '' }}</p>
+                  <p class="text-sm text-gray-500 mt-2">
+                    {{ listing.beds }} lit{{ listing.beds > 1 ? 's' : '' }} •
+                    {{ listing.baths }} salle{{ listing.baths > 1 ? 's' : '' }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -117,7 +124,9 @@ onMounted(() => {
               </div>
 
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre de voyageurs</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-2"
+                  >Nombre de voyageurs</label
+                >
                 <input
                   v-model.number="guests"
                   type="number"
@@ -155,11 +164,7 @@ onMounted(() => {
 
             <!-- Terms and Conditions -->
             <div class="flex items-start gap-3 mb-8">
-              <input
-                id="terms"
-                type="checkbox"
-                class="mt-1 w-4 h-4 accent-pink-500 rounded"
-              />
+              <input id="terms" type="checkbox" class="mt-1 w-4 h-4 accent-pink-500 rounded" />
               <label for="terms" class="text-sm text-gray-600">
                 J'accepte les conditions d'utilisation et les règles de la maison
               </label>
@@ -183,8 +188,14 @@ onMounted(() => {
 
             <div v-if="numberOfNights > 0" class="space-y-3 mb-4 pb-4 border-b border-gray-200">
               <div class="flex justify-between">
-                <span class="text-gray-700">{{ listing.price }}€ × {{ numberOfNights }} nuit{{ numberOfNights > 1 ? 's' : '' }}</span>
-                <span class="font-semibold text-gray-900">{{ listing.price * numberOfNights }}€</span>
+                <span class="text-gray-700"
+                  >{{ listing.price }}€ × {{ numberOfNights }} nuit{{
+                    numberOfNights > 1 ? 's' : ''
+                  }}</span
+                >
+                <span class="font-semibold text-gray-900"
+                  >{{ listing.price * numberOfNights }}€</span
+                >
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-700">Frais de nettoyage</span>
@@ -199,9 +210,7 @@ onMounted(() => {
                 <span>{{ totalPrice }}€</span>
               </div>
             </div>
-            <div v-else class="text-center text-gray-500 py-4">
-              Sélectionnez vos dates
-            </div>
+            <div v-else class="text-center text-gray-500 py-4">Sélectionnez vos dates</div>
 
             <!-- Policies -->
             <div class="space-y-3 text-xs text-gray-600">

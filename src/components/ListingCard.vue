@@ -12,14 +12,18 @@ const handleViewDetails = () => {
 </script>
 
 <template>
-  <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer group">
+  <div
+    class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer group"
+  >
     <div class="relative overflow-hidden h-64 bg-gray-200">
       <img
         :src="listing.image"
         :alt="listing.title"
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
       />
-      <div class="absolute top-3 right-3 bg-white rounded-full px-3 py-1 text-sm font-semibold text-gray-900 flex items-center gap-1">
+      <div
+        class="absolute top-3 right-3 bg-white rounded-full px-3 py-1 text-sm font-semibold text-gray-900 flex items-center gap-1"
+      >
         ★ {{ listing.rating }}
       </div>
     </div>

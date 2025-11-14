@@ -39,11 +39,11 @@ export const useListingsStore = defineStore('listings', () => {
   }
 
   const getListingById = (id: number) => {
-    return listings.value.find(l => l.id === id)
+    return listings.value.find((l) => l.id === id)
   }
 
   const searchListings = (city: string = '', minPrice: number = 0, maxPrice: number = Infinity) => {
-    return listings.value.filter(listing => {
+    return listings.value.filter((listing) => {
       const cityMatch = city === '' || listing.city.toLowerCase().includes(city.toLowerCase())
       const priceMatch = listing.price >= minPrice && listing.price <= maxPrice
       return cityMatch && priceMatch
@@ -53,21 +53,21 @@ export const useListingsStore = defineStore('listings', () => {
   const addListing = (listing: Omit<Listing, 'id'>) => {
     const newListing: Listing = {
       ...listing,
-      id: Math.max(...listings.value.map(l => l.id), 0) + 1,
+      id: Math.max(...listings.value.map((l) => l.id), 0) + 1,
     }
     listings.value.push(newListing)
     return newListing
   }
 
   const updateListing = (id: number, updates: Partial<Listing>) => {
-    const index = listings.value.findIndex(l => l.id === id)
+    const index = listings.value.findIndex((l) => l.id === id)
     if (index !== -1) {
       listings.value[index] = { ...listings.value[index], ...updates }
     }
   }
 
   const deleteListing = (id: number) => {
-    const index = listings.value.findIndex(l => l.id === id)
+    const index = listings.value.findIndex((l) => l.id === id)
     if (index !== -1) {
       listings.value.splice(index, 1)
     }
@@ -76,7 +76,7 @@ export const useListingsStore = defineStore('listings', () => {
   const addBooking = (booking: Omit<Booking, 'id' | 'createdAt'>) => {
     const newBooking: Booking = {
       ...booking,
-      id: Math.max(...bookings.value.map(b => b.id), 0) + 1,
+      id: Math.max(...bookings.value.map((b) => b.id), 0) + 1,
       createdAt: new Date().toISOString(),
     }
     bookings.value.push(newBooking)
@@ -84,7 +84,7 @@ export const useListingsStore = defineStore('listings', () => {
   }
 
   const getBookingsByUser = (userId: number) => {
-    return bookings.value.filter(b => b.userId === userId)
+    return bookings.value.filter((b) => b.userId === userId)
   }
 
   const getAllBookings = () => {
@@ -92,7 +92,7 @@ export const useListingsStore = defineStore('listings', () => {
   }
 
   const getCities = () => {
-    return [...new Set(listings.value.map(l => l.city))].sort()
+    return [...new Set(listings.value.map((l) => l.city))].sort()
   }
 
   return {

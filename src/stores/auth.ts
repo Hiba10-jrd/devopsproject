@@ -31,7 +31,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const login = (email: string, password: string): boolean => {
-    const user = users.value.find(u => u.email === email && u.password === password)
+    const user = users.value.find((u) => u.email === email && u.password === password)
     if (user) {
       currentUser.value = user
       localStorage.setItem('currentUser', JSON.stringify(user))
@@ -41,13 +41,13 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const register = (name: string, email: string, password: string): boolean => {
-    const userExists = users.value.some(u => u.email === email)
+    const userExists = users.value.some((u) => u.email === email)
     if (userExists) {
       return false
     }
 
     const newUser: User = {
-      id: Math.max(...users.value.map(u => u.id), 0) + 1,
+      id: Math.max(...users.value.map((u) => u.id), 0) + 1,
       name,
       email,
       password,

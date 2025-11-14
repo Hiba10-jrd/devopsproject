@@ -22,7 +22,13 @@ const formData = ref<Partial<Listing>>({
 const bookings = computed(() => listingsStore.getAllBookings())
 
 const handleAddListing = () => {
-  if (!formData.value.title || !formData.value.city || !formData.value.price || !formData.value.image || !formData.value.description) {
+  if (
+    !formData.value.title ||
+    !formData.value.city ||
+    !formData.value.price ||
+    !formData.value.image ||
+    !formData.value.description
+  ) {
     alert('Veuillez remplir tous les champs')
     return
   }
@@ -82,7 +88,7 @@ const handleDeleteListing = (id: number) => {
               'px-6 py-4 font-semibold transition',
               activeTab === 'listings'
                 ? 'text-pink-600 border-b-2 border-pink-500'
-                : 'text-gray-600 hover:text-gray-900'
+                : 'text-gray-600 hover:text-gray-900',
             ]"
           >
             Mes logements ({{ listingsStore.listings.length }})
@@ -93,7 +99,7 @@ const handleDeleteListing = (id: number) => {
               'px-6 py-4 font-semibold transition',
               activeTab === 'bookings'
                 ? 'text-pink-600 border-b-2 border-pink-500'
-                : 'text-gray-600 hover:text-gray-900'
+                : 'text-gray-600 hover:text-gray-900',
             ]"
           >
             Réservations ({{ bookings.length }})
@@ -104,7 +110,7 @@ const handleDeleteListing = (id: number) => {
               'px-6 py-4 font-semibold transition',
               activeTab === 'add'
                 ? 'text-pink-600 border-b-2 border-pink-500'
-                : 'text-gray-600 hover:text-gray-900'
+                : 'text-gray-600 hover:text-gray-900',
             ]"
           >
             {{ editingId ? 'Modifier' : 'Ajouter' }} un logement
@@ -127,7 +133,11 @@ const handleDeleteListing = (id: number) => {
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
-              <tr v-for="listing in listingsStore.listings" :key="listing.id" class="hover:bg-gray-50">
+              <tr
+                v-for="listing in listingsStore.listings"
+                :key="listing.id"
+                class="hover:bg-gray-50"
+              >
                 <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ listing.title }}</td>
                 <td class="px-6 py-4 text-sm text-gray-600">{{ listing.city }}</td>
                 <td class="px-6 py-4 text-sm text-gray-900 font-semibold">{{ listing.price }}€</td>
@@ -159,7 +169,9 @@ const handleDeleteListing = (id: number) => {
           <table class="w-full">
             <thead class="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">ID Réservation</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                  ID Réservation
+                </th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">ID Logement</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Arrivée</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Départ</th>
@@ -170,9 +182,15 @@ const handleDeleteListing = (id: number) => {
               <tr v-for="booking in bookings" :key="booking.id" class="hover:bg-gray-50">
                 <td class="px-6 py-4 text-sm font-medium text-gray-900">#{{ booking.id }}</td>
                 <td class="px-6 py-4 text-sm text-gray-600">#{{ booking.listingId }}</td>
-                <td class="px-6 py-4 text-sm text-gray-600">{{ new Date(booking.checkInDate).toLocaleDateString('fr-FR') }}</td>
-                <td class="px-6 py-4 text-sm text-gray-600">{{ new Date(booking.checkOutDate).toLocaleDateString('fr-FR') }}</td>
-                <td class="px-6 py-4 text-sm font-semibold text-gray-900">{{ booking.totalPrice }}€</td>
+                <td class="px-6 py-4 text-sm text-gray-600">
+                  {{ new Date(booking.checkInDate).toLocaleDateString('fr-FR') }}
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">
+                  {{ new Date(booking.checkOutDate).toLocaleDateString('fr-FR') }}
+                </td>
+                <td class="px-6 py-4 text-sm font-semibold text-gray-900">
+                  {{ booking.totalPrice }}€
+                </td>
               </tr>
             </tbody>
           </table>
