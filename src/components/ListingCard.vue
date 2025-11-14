@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import type { Listing } from '@/stores/listings'
 
 withDefaults(defineProps<{ listing: Listing }>(), {})
 
 const router = useRouter()
+const authStore = useAuthStore()
 
 const handleViewDetails = () => {
   router.push({ name: 'ListingDetails', params: { id: listing.id } })
+}
+
+const handleBooking = () => {
+  if (!authStore.isLoggedIn) {
+    router.push('/login')
+  } else {
+    router.push({ name: 'Booking', params: { id: listing.id } })
+  }
 }
 </script>
 
