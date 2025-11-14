@@ -33,12 +33,8 @@ const handleKeydown = (e: KeyboardEvent) => {
       <div class="flex justify-between items-center h-16">
         <!-- Logo -->
         <router-link to="/" class="flex items-center gap-2 group">
-          <div
-            class="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg"
-          >
-            <span class="text-white font-bold text-lg">✕</span>
-          </div>
-          <span class="text-xl font-bold text-gray-900 hidden sm:inline">AirBnB</span>
+           <img src="/images/logo.png" alt="MAISSON Logo" class="h-40 w-20 object-contain">
+          <span class="text-xl font-bold text-gray-900 hidden sm:inline"></span>
         </router-link>
 
         <!-- Search Bar (Desktop) -->
@@ -124,7 +120,6 @@ const handleKeydown = (e: KeyboardEvent) => {
           </svg>
         </button>
       </div>
-
       <!-- Mobile Menu -->
       <div v-if="isMenuOpen" class="md:hidden pb-4 border-t border-gray-200">
         <div class="py-3 space-y-2">

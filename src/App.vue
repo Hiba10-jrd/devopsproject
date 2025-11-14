@@ -17,7 +17,7 @@ onMounted(async () => {
 
 <template>
   <div class="min-h-screen bg-white">
-    <Header />
+    <Header/>
     <main class="pt-16">
       <router-view />
     </main>
