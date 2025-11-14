@@ -1,0 +1,87 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin",
+      "email": "admin@test.com",
+      "password": "admin",
+      "isAdmin": true
+    },
+    {
+      "id": 2,
+      "name": "Jean Dupont",
+      "email": "jean@test.com",
+      "password": "password123",
+      "isAdmin": false
+    }
+  ],
+  "listings": [
+    {
+      "id": 1,
+      "title": "Appartement moderne à Casablanca",
+      "city": "Casablanca",
+      "price": 450,
+      "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+      "beds": 2,
+      "baths": 1,
+      "description": "Appartement lumineux proche du centre-ville avec une vue magnifique sur la médina.",
+      "rating": 4.8
+    },
+    {
+      "id": 2,
+      "title": "Villa luxueuse à Marrakech",
+      "city": "Marrakech",
+      "price": 850,
+      "image": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop",
+      "beds": 4,
+      "baths": 3,
+      "description": "Villa spacieuse avec piscine, jardin paysagé et accès direct aux médinas.",
+      "rating": 4.9
+    },
+    {
+      "id": 3,
+      "title": "Studio charmant à Fès",
+      "city": "Fès",
+      "price": 280,
+      "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "beds": 1,
+      "baths": 1,
+      "description": "Petit studio cosy dans la vieille médina, idéal pour les voyageurs solo.",
+      "rating": 4.6
+    },
+    {
+      "id": 4,
+      "title": "Penthouse à Casablanca",
+      "city": "Casablanca",
+      "price": 1200,
+      "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+      "beds": 3,
+      "baths": 2,
+      "description": "Penthouse moderne avec terrasse panoramique et vue sur l'océan.",
+      "rating": 5.0
+    },
+    {
+      "id": 5,
+      "title": "Riad traditionnel à Marrakech",
+      "city": "Marrakech",
+      "price": 650,
+      "image": "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&h=600&fit=crop",
+      "beds": 2,
+      "baths": 2,
+      "description": "Riad authentique avec cour intérieure, fontaine et décoration traditionnelle.",
+      "rating": 4.7
+    },
+    {
+      "id": 6,
+      "title": "Maison de vacances à Agadir",
+      "city": "Agadir",
+      "price": 380,
+      "image": "https://images.unsplash.com/photo-1470932579955-7b429ee3a315?w=800&h=600&fit=crop",
+      "beds": 2,
+      "baths": 1,
+      "description": "Maison ensoleillée près de la plage, idéale pour les familles.",
+      "rating": 4.5
+    }
+  ],
+  "bookings": []
+}
