@@ -15,6 +15,10 @@ const listing = computed(() => listingsStore.getListingById(listingId))
 const checkInDate = ref('')
 const checkOutDate = ref('')
 const guests = ref(1)
+const paymentMethod = ref('cash')
+const guestPhone = ref('')
+const guestNotes = ref('')
+const agreeTerms = ref(false)
 const isSubmitting = ref(false)
 
 const numberOfNights = computed(() => {
@@ -37,8 +41,18 @@ const handleConfirmBooking = async () => {
     return
   }
 
+  if (!guestPhone.value.trim()) {
+    alert('Veuillez entrer votre numéro de téléphone')
+    return
+  }
+
   if (new Date(checkInDate.value) >= new Date(checkOutDate.value)) {
     alert("La date de départ doit être après la date d'arrivée")
+    return
+  }
+
+  if (!agreeTerms.value) {
+    alert('Veuillez accepter les conditions d\'utilisation')
     return
   }
 
@@ -51,9 +65,15 @@ const handleConfirmBooking = async () => {
       checkInDate: checkInDate.value,
       checkOutDate: checkOutDate.value,
       totalPrice: totalPrice.value,
+      guestPhone: guestPhone.value,
+      guestNotes: guestNotes.value,
+      paymentMethod: paymentMethod.value,
+      ownerName: listing.value.ownerName,
+      ownerPhone: listing.value.ownerPhone,
+      listingTitle: listing.value.title,
     })
 
-    alert('Réservation confirmée avec succès! Numéro de confirmation: ' + booking.id)
+    alert('Réservation confirmée avec succès!\n\nNuméro de confirmation: ' + booking.id + '\n\nVous pouvez maintenant contacter le propriétaire au: ' + listing.value.ownerPhone)
     router.push('/')
   } catch (error) {
     console.error('Booking failed:', error)
@@ -103,6 +123,7 @@ onMounted(() => {
 
             <!-- Booking Details -->
             <div class="space-y-6 mb-8">
+              <h3 class="text-xl font-semibold text-gray-900">Détails de la réservation</h3>
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">Date d'arrivée</label>
                 <input
@@ -124,9 +145,7 @@ onMounted(() => {
               </div>
 
               <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2"
-                  >Nombre de voyageurs</label
-                >
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre de voyageurs</label>
                 <input
                   v-model.number="guests"
                   type="number"
@@ -139,7 +158,7 @@ onMounted(() => {
 
             <!-- Guest Information -->
             <div class="mb-8 pb-8 border-b border-gray-200">
-              <h3 class="text-xl font-semibold text-gray-900 mb-4">Vos informations</h3>
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">Vos informations personnelles</h3>
               <div class="space-y-4">
                 <div>
                   <label class="block text-sm font-semibold text-gray-700 mb-2">Nom complet</label>
@@ -159,14 +178,79 @@ onMounted(() => {
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-700"
                   />
                 </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Numéro de téléphone *</label>
+                  <input
+                    v-model="guestPhone"
+                    type="tel"
+                    placeholder="+212 6 12 34 56 78"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Message au propriétaire (optionnel)</label>
+                  <textarea
+                    v-model="guestNotes"
+                    placeholder="Parlez-nous de vous, vos demandes spéciales..."
+                    rows="3"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="mb-8 pb-8 border-b border-gray-200">
+              <h3 class="text-xl font-semibold text-gray-900 mb-4">Méthode de paiement</h3>
+              <div class="space-y-3">
+                <div class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-pink-500 cursor-pointer transition" :class="{ 'border-pink-500 bg-pink-50': paymentMethod === 'cash' }">
+                  <input
+                    id="cash"
+                    v-model="paymentMethod"
+                    type="radio"
+                    value="cash"
+                    class="w-4 h-4 accent-pink-500"
+                  />
+                  <label for="cash" class="ml-3 flex-1 cursor-pointer">
+                    <p class="font-semibold text-gray-900">Paiement en espèces</p>
+                    <p class="text-sm text-gray-600">Payez le propriétaire directement à l'arrivée</p>
+                  </label>
+                </div>
+              </div>
+              <p class="text-sm text-gray-500 mt-4">
+                <strong>Note:</strong> Vous recevrez les coordonnées du propriétaire après confirmation. Le paiement s'effectuera directement avec le propriétaire.
+              </p>
+            </div>
+
+            <!-- Owner Contact Info -->
+            <div class="mb-8 pb-8 border-b border-gray-200 bg-blue-50 p-4 rounded-lg">
+              <h3 class="text-lg font-semibold text-gray-900 mb-3">Informations du propriétaire</h3>
+              <div class="space-y-2">
+                <p class="text-gray-700">
+                  <strong>Nom:</strong> {{ listing.ownerName }}
+                </p>
+                <p class="text-gray-700">
+                  <strong>Téléphone:</strong>
+                  <a :href="'tel:' + listing.ownerPhone" class="text-pink-600 hover:text-pink-700 font-semibold">
+                    {{ listing.ownerPhone }}
+                  </a>
+                </p>
+                <p class="text-sm text-gray-600 mt-2">
+                  Vous pourrez contacter le propriétaire directement après la confirmation de votre réservation.
+                </p>
               </div>
             </div>
 
             <!-- Terms and Conditions -->
             <div class="flex items-start gap-3 mb-8">
-              <input id="terms" type="checkbox" class="mt-1 w-4 h-4 accent-pink-500 rounded" />
-              <label for="terms" class="text-sm text-gray-600">
-                J'accepte les conditions d'utilisation et les règles de la maison
+              <input
+                id="terms"
+                v-model="agreeTerms"
+                type="checkbox"
+                class="mt-1 w-4 h-4 accent-pink-500 rounded cursor-pointer"
+              />
+              <label for="terms" class="text-sm text-gray-600 cursor-pointer">
+                J'accepte les conditions d'utilisation et les règles de la maison. Je comprends que le paiement s'effectuera en espèces avec le propriétaire.
               </label>
             </div>
 
@@ -188,14 +272,8 @@ onMounted(() => {
 
             <div v-if="numberOfNights > 0" class="space-y-3 mb-4 pb-4 border-b border-gray-200">
               <div class="flex justify-between">
-                <span class="text-gray-700"
-                  >{{ listing.price }}€ × {{ numberOfNights }} nuit{{
-                    numberOfNights > 1 ? 's' : ''
-                  }}</span
-                >
-                <span class="font-semibold text-gray-900"
-                  >{{ listing.price * numberOfNights }}€</span
-                >
+                <span class="text-gray-700">{{ listing.price }}€ × {{ numberOfNights }} nuit{{ numberOfNights > 1 ? 's' : '' }}</span>
+                <span class="font-semibold text-gray-900">{{ listing.price * numberOfNights }}€</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-700">Frais de nettoyage</span>
@@ -216,15 +294,15 @@ onMounted(() => {
             <div class="space-y-3 text-xs text-gray-600">
               <div class="flex gap-2">
                 <span>✓</span>
-                <span>Annulation flexible disponible</span>
+                <span>Annulation flexible</span>
               </div>
               <div class="flex gap-2">
                 <span>✓</span>
-                <span>Paiement sécurisé</span>
+                <span>Paiement en espèces</span>
               </div>
               <div class="flex gap-2">
                 <span>✓</span>
-                <span>Vérification de l'hôte</span>
+                <span>Contact propriétaire garanti</span>
               </div>
             </div>
           </div>
