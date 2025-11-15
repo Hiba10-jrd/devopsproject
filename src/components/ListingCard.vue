@@ -40,7 +40,7 @@ const handleViewDetails = () => {
       <div class="flex justify-between items-center pt-4 border-t border-gray-200">
         <div>
           <span class="text-2xl font-bold text-gray-900">{{ listing.price }}</span>
-          <span class="text-gray-600 text-sm"> €/nuit</span>
+          <span class="text-gray-600 text-sm"> DH/nuit</span>
         </div>
         <button
           @click="handleViewDetails"

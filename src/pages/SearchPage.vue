@@ -63,7 +63,7 @@ onMounted(() => {
               <label class="block text-sm font-semibold text-gray-700 mb-3">Prix par nuit</label>
               <div class="space-y-3">
                 <div>
-                  <label class="text-xs text-gray-600">Minimum (€)</label>
+                  <label class="text-xs text-gray-600">Minimum (DH)</label>
                   <input
                     v-model.number="minPrice"
                     @change="applyFilters"
@@ -80,7 +80,7 @@ onMounted(() => {
                   />
                 </div>
                 <div>
-                  <label class="text-xs text-gray-600">Maximum (€)</label>
+                  <label class="text-xs text-gray-600">Maximum (DH)</label>
                   <input
                     v-model.number="maxPrice"
                     @change="applyFilters"
@@ -97,7 +97,7 @@ onMounted(() => {
                   />
                 </div>
               </div>
-              <div class="mt-2 text-sm text-gray-600">Entre {{ minPrice }}€ et {{ maxPrice }}€</div>
+              <div class="mt-2 text-sm text-gray-600">Entre {{ minPrice }}DH et {{ maxPrice }}DH</div>
             </div>
 
             <button
@@ -129,7 +129,7 @@ onMounted(() => {
               <span v-if="searchCity">à {{ searchCity }}</span>
               <span v-if="searchCity && (minPrice > 0 || maxPrice < 5000)"> •</span>
               <span v-if="minPrice > 0 || maxPrice < 5000">
-                Entre {{ minPrice }}€ et {{ maxPrice }}€ par nuit</span
+                Entre {{ minPrice }}DH et {{ maxPrice }}DH par nuit</span
               >
             </p>
           </div>

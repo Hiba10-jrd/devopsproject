@@ -1,23 +1,39 @@
+<!-- filepath: src/App.vue -->
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useListingsStore } from '@/stores/listings'
 import Header from '@/components/Header.vue'
+import PageLoader from '@/components/PageLoader.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const listingsStore = useListingsStore()
+const loaderRef = ref<InstanceType<typeof PageLoader> | null>(null)
 
 onMounted(async () => {
   await authStore.loadUsersFromDb()
   await listingsStore.loadListings()
 })
+
+// Ajouter le loading sur chaque navigation
+router.beforeEach((to, from, next) => {
+  if (to.path !== from.path) {
+    loaderRef.value?.startLoading()
+  }
+  next()
+})
+
+router.afterEach(() => {
+  loaderRef.value?.stopLoading()
+})
 </script>
 
 <template>
   <div class="min-h-screen bg-white">
-    <Header/>
+    <PageLoader ref="loaderRef" />
+    <Header />
     <main class="pt-16">
       <router-view />
     </main>
@@ -25,7 +41,7 @@ onMounted(async () => {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
-            <h3 class="font-semibold text-lg mb-4">AirBnB</h3>
+            <h3 class="font-semibold text-lg mb-4">MAISSON</h3>
             <p class="text-gray-400 text-sm">La plateforme leader pour voyager et vivre partout.</p>
           </div>
           <div>
@@ -54,7 +70,7 @@ onMounted(async () => {
           </div>
         </div>
         <div class="border-t border-gray-800 pt-8 text-gray-400 text-sm text-center">
-          <p>&copy; 2024 AirBnB. Tous droits réservés.</p>
+          <p>&copy; 2024 MAISSON. Tous droits réservés.</p>
         </div>
       </div>
     </footer>
