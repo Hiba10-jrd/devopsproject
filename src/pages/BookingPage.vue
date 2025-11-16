@@ -134,7 +134,7 @@ onMounted(() => {
                 <input
                   v-model="checkInDate"
                   type="date"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                   :min="new Date().toISOString().split('T')[0]"
                 />
               </div>
@@ -144,21 +144,21 @@ onMounted(() => {
                 <input
                   v-model="checkOutDate"
                   type="date"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                   :min="new Date().toISOString().split('T')[0]"
                 />
               </div>
 
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2"
-                  >Nombre de voyageurs</label
+                  >Nombre de clients</label
                 >
                 <input
                   v-model.number="guests"
                   type="number"
                   min="1"
                   max="10"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 />
               </div>
             </div>
@@ -195,7 +195,7 @@ onMounted(() => {
                     v-model="guestPhone"
                     type="tel"
                     placeholder="+212 6 12 34 56 78"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </div>
                 <div>
@@ -206,7 +206,7 @@ onMounted(() => {
                     v-model="guestNotes"
                     placeholder="Parlez-nous de vous, vos demandes spéciales..."
                     rows="3"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </div>
               </div>
@@ -217,15 +217,15 @@ onMounted(() => {
               <h3 class="text-xl font-semibold text-gray-900 mb-4">Méthode de paiement</h3>
               <div class="space-y-3">
                 <div
-                  class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-pink-500 cursor-pointer transition"
-                  :class="{ 'border-pink-500 bg-pink-50': paymentMethod === 'cash' }"
+                  class="flex items-center p-4 border border-gray-200 rounded-lg hover:border-orange-500 cursor-pointer transition"
+                  :class="{ 'border-orange-500 bg-orange-50': paymentMethod === 'cash' }"
                 >
                   <input
                     id="cash"
                     v-model="paymentMethod"
                     type="radio"
                     value="cash"
-                    class="w-4 h-4 accent-pink-500"
+                    class="w-4 h-4 accent-orange-500"
                   />
                   <label for="cash" class="ml-3 flex-1 cursor-pointer">
                     <p class="font-semibold text-gray-900">Paiement en espèces</p>
@@ -250,7 +250,7 @@ onMounted(() => {
                   <strong>Téléphone:</strong>
                   <a
                     :href="'tel:' + listing.ownerPhone"
-                    class="text-pink-600 hover:text-pink-700 font-semibold"
+                    class="text-orange-600 hover:text-orange-700 font-semibold"
                   >
                     {{ listing.ownerPhone }}
                   </a>
@@ -268,7 +268,7 @@ onMounted(() => {
                 id="terms"
                 v-model="agreeTerms"
                 type="checkbox"
-                class="mt-1 w-4 h-4 accent-pink-500 rounded cursor-pointer"
+                class="mt-1 w-4 h-4 accent-orange-500 rounded cursor-pointer"
               />
               <label for="terms" class="text-sm text-gray-600 cursor-pointer">
                 J'accepte les conditions d'utilisation et les règles de la maison. Je comprends que
@@ -280,7 +280,7 @@ onMounted(() => {
             <button
               @click="handleConfirmBooking"
               :disabled="isSubmitting"
-              class="w-full px-6 py-4 bg-pink-500 text-white rounded-lg font-bold text-lg hover:bg-pink-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              class="w-full px-6 py-4 bg-orange-500 text-white rounded-lg font-bold text-lg hover:bg-orange-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {{ isSubmitting ? 'Traitement...' : 'Confirmer la réservation' }}
             </button>
@@ -295,12 +295,12 @@ onMounted(() => {
             <div v-if="numberOfNights > 0" class="space-y-3 mb-4 pb-4 border-b border-gray-200">
               <div class="flex justify-between">
                 <span class="text-gray-700"
-                  >{{ listing.price }}€ × {{ numberOfNights }} nuit{{
+                  >{{ listing.price }}DH × {{ numberOfNights }} nuit{{
                     numberOfNights > 1 ? 's' : ''
                   }}</span
                 >
                 <span class="font-semibold text-gray-900"
-                  >{{ listing.price * numberOfNights }}€</span
+                  >{{ listing.price * numberOfNights }}DH</span
                 >
               </div>
               <div class="flex justify-between">
@@ -313,7 +313,7 @@ onMounted(() => {
               </div>
               <div class="flex justify-between text-lg font-bold text-gray-900">
                 <span>Total</span>
-                <span>{{ totalPrice }}€</span>
+                <span>{{ totalPrice }}DH</span>
               </div>
             </div>
             <div v-else class="text-center text-gray-500 py-4">Sélectionnez vos dates</div>

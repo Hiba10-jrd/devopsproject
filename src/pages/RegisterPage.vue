@@ -57,21 +57,20 @@ const handleKeydown = (e: KeyboardEvent) => {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-pink-50 to-rose-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+    class="min-h-screen bg-gradient-to-br from-orange-50 to-orange-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
   >
     <div class="w-full max-w-md">
       <div class="bg-white rounded-lg shadow-lg p-8">
         <!-- Logo -->
         <div class="flex justify-center mb-8">
-          <img src="/images/logo.png" alt="MAISSON Logo" class="h-21 w-20 object-contain">
-
+          <img src="/images/logo.png" alt="MAISSON Logo"  class="h-32 w-auto object-contain max-w-full">
         </div>
 
         <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">S'inscrire</h2>
 
         <!-- Error Message -->
-        <div v-if="errorMessage" class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p class="text-red-700 text-sm">{{ errorMessage }}</p>
+        <div v-if="errorMessage" class="mb-4 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+          <p class="text-orange-700 text-sm">{{ errorMessage }}</p>
         </div>
 
         <!-- Form -->
@@ -84,8 +83,8 @@ const handleKeydown = (e: KeyboardEvent) => {
               id="name"
               v-model="name"
               type="text"
-              placeholder="Jean Dupont"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              placeholder="Nom complet"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               :disabled="isLoading"
             />
           </div>
@@ -99,7 +98,7 @@ const handleKeydown = (e: KeyboardEvent) => {
               v-model="email"
               type="email"
               placeholder="votre@email.com"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               :disabled="isLoading"
             />
           </div>
@@ -113,7 +112,7 @@ const handleKeydown = (e: KeyboardEvent) => {
               v-model="password"
               type="password"
               placeholder="••••••••"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               :disabled="isLoading"
             />
             <p class="text-xs text-gray-500 mt-1">Au moins 6 caractères</p>
@@ -128,7 +127,7 @@ const handleKeydown = (e: KeyboardEvent) => {
               v-model="confirmPassword"
               type="password"
               placeholder="••••••••"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               :disabled="isLoading"
               @keydown="handleKeydown"
             />
@@ -137,7 +136,7 @@ const handleKeydown = (e: KeyboardEvent) => {
           <button
             type="submit"
             :disabled="isLoading"
-            class="w-full px-4 py-3 bg-pink-500 text-white rounded-lg font-bold hover:bg-pink-600 transition disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+            class="w-full px-4 py-3 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition disabled:opacity-50 disabled:cursor-not-allowed mt-6"
           >
             {{ isLoading ? 'Inscription en cours...' : "S'inscrire" }}
           </button>
@@ -153,7 +152,7 @@ const handleKeydown = (e: KeyboardEvent) => {
         <div class="mt-6 text-center">
           <p class="text-gray-600">
             Vous avez déjà un compte ?
-            <router-link to="/login" class="text-pink-500 font-semibold hover:text-pink-600">
+            <router-link to="/login" class="text-orange-500 font-semibold hover:text-orange-600">
               Se connecter
             </router-link>
           </p>

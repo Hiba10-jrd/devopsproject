@@ -32,7 +32,7 @@ const handleBooking = () => {
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
       />
       <div
-        class="absolute top-3 right-3 bg-white rounded-full px-3 py-1 text-sm font-semibold text-gray-900 flex items-center gap-1"
+        class="absolute top-3 right-3 bg-white rounded-full px-3 py-1 text-sm font-semibold text-yellow-300 flex items-center gap-1"
       >
         ★ {{ listing.rating }}
       </div>
@@ -55,13 +55,13 @@ const handleBooking = () => {
         <div class="flex gap-2">
           <button
             @click="handleViewDetails"
-            class="px-4 py-2 bg-white border border-pink-500 text-pink-500 rounded-lg font-medium hover:bg-pink-50 transition"
+            class="px-4 py-2 bg-white border border-orange-300 text-orange-300 rounded-lg font-medium hover:bg-orange-400 transition"
           >
             Voir
           </button>
           <button
             @click="handleBooking"
-            class="px-4 py-2 bg-pink-500 text-white rounded-lg font-medium hover:bg-pink-600 transition"
+            class="px-4 py-2 bg-orange-300 text-white rounded-lg font-medium hover:bg-orange-500 transition"
           >
             Réserver
           </button>

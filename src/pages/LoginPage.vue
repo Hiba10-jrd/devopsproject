@@ -45,24 +45,20 @@ const handleKeydown = (e: KeyboardEvent) => {
 
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-pink-50 to-rose-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+    class="min-h-screen bg-gradient-to-br from-orange-50 to-orange-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
   >
     <div class="w-full max-w-md">
       <div class="bg-white rounded-lg shadow-lg p-8">
         <!-- Logo -->
         <div class="flex justify-center mb-8">
-          <div
-            class="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg"
-          >
-            <span class="text-white font-bold text-2xl">✕</span>
-          </div>
+          <img src="/images/logo.png" alt="MAISSON Logo"  class="h-32 w-auto object-contain max-w-full">
         </div>
 
         <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Se connecter</h2>
 
         <!-- Error Message -->
-        <div v-if="errorMessage" class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p class="text-red-700 text-sm">{{ errorMessage }}</p>
+        <div v-if="errorMessage" class="mb-4 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+          <p class="text-orange-700 text-sm">{{ errorMessage }}</p>
         </div>
 
         <!-- Form -->
@@ -76,7 +72,7 @@ const handleKeydown = (e: KeyboardEvent) => {
               v-model="email"
               type="email"
               placeholder="votre@email.com"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               :disabled="isLoading"
               @keydown="handleKeydown"
             />
@@ -91,7 +87,7 @@ const handleKeydown = (e: KeyboardEvent) => {
               v-model="password"
               type="password"
               placeholder="••••••••"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               :disabled="isLoading"
               @keydown="handleKeydown"
             />
@@ -100,7 +96,7 @@ const handleKeydown = (e: KeyboardEvent) => {
           <button
             type="submit"
             :disabled="isLoading"
-            class="w-full px-4 py-3 bg-pink-500 text-white rounded-lg font-bold hover:bg-pink-600 transition disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+            class="w-full px-4 py-3 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition disabled:opacity-50 disabled:cursor-not-allowed mt-6"
           >
             {{ isLoading ? 'Connexion en cours...' : 'Se connecter' }}
           </button>
@@ -120,9 +116,17 @@ const handleKeydown = (e: KeyboardEvent) => {
             <p class="text-gray-700 mt-3">
               <strong>Utilisateur:</strong>
               <br />
-              Email: jean@test.com
+              Email: oula@test.com
               <br />
-              Mot de passe: password123
+              Mot de passe: oula@test.com
+              <br />
+              Email: fati@test.com
+              <br />
+              Mot de passe: fati@test.com
+              <br />
+              Email: houda@test.com
+              <br />
+              Mot de passe: houda@test.com
             </p>
           </div>
         </div>
@@ -131,7 +135,7 @@ const handleKeydown = (e: KeyboardEvent) => {
         <div class="mt-6 text-center">
           <p class="text-gray-600">
             Pas encore inscrit ?
-            <router-link to="/register" class="text-pink-500 font-semibold hover:text-pink-600">
+            <router-link to="/register" class="text-orange-500 font-semibold hover:text-orange-600">
               S'inscrire
             </router-link>
           </p>

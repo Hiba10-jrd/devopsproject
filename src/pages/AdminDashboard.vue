@@ -87,7 +87,7 @@ const handleDeleteListing = (id: number) => {
             :class="[
               'px-6 py-4 font-semibold transition',
               activeTab === 'listings'
-                ? 'text-pink-600 border-b-2 border-pink-500'
+                ? 'text-orange-600 border-b-2 border-orange-500'
                 : 'text-gray-600 hover:text-gray-900',
             ]"
           >
@@ -98,7 +98,7 @@ const handleDeleteListing = (id: number) => {
             :class="[
               'px-6 py-4 font-semibold transition',
               activeTab === 'bookings'
-                ? 'text-pink-600 border-b-2 border-pink-500'
+                ? 'text-orange-600 border-b-2 border-orange-500'
                 : 'text-gray-600 hover:text-gray-900',
             ]"
           >
@@ -109,7 +109,7 @@ const handleDeleteListing = (id: number) => {
             :class="[
               'px-6 py-4 font-semibold transition',
               activeTab === 'add'
-                ? 'text-pink-600 border-b-2 border-pink-500'
+                ? 'text-orange-600 border-b-2 border-orange-500'
                 : 'text-gray-600 hover:text-gray-900',
             ]"
           >
@@ -140,7 +140,7 @@ const handleDeleteListing = (id: number) => {
               >
                 <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ listing.title }}</td>
                 <td class="px-6 py-4 text-sm text-gray-600">{{ listing.city }}</td>
-                <td class="px-6 py-4 text-sm text-gray-900 font-semibold">{{ listing.price }}€</td>
+                <td class="px-6 py-4 text-sm text-gray-900 font-semibold">{{ listing.price }}DH</td>
                 <td class="px-6 py-4 text-sm text-gray-600">{{ listing.beds }}</td>
                 <td class="px-6 py-4 text-sm text-gray-600">⭐ {{ listing.rating }}</td>
                 <td class="px-6 py-4 text-right text-sm space-x-2">
@@ -152,7 +152,7 @@ const handleDeleteListing = (id: number) => {
                   </button>
                   <button
                     @click="handleDeleteListing(listing.id)"
-                    class="px-3 py-1 text-red-600 hover:bg-red-50 rounded transition"
+                    class="px-3 py-1 text-orange-600 hover:bg-orange-50 rounded transition"
                   >
                     Supprimer
                   </button>
@@ -192,7 +192,7 @@ const handleDeleteListing = (id: number) => {
                   {{ new Date(booking.checkOutDate).toLocaleDateString('fr-FR') }}
                 </td>
                 <td class="px-6 py-4 text-sm font-semibold text-gray-900">
-                  {{ booking.totalPrice }}€
+                  {{ booking.totalPrice }}DH
                 </td>
               </tr>
             </tbody>
@@ -216,7 +216,7 @@ const handleDeleteListing = (id: number) => {
               v-model="formData.title"
               type="text"
               placeholder="Titre du logement"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
@@ -227,17 +227,17 @@ const handleDeleteListing = (id: number) => {
                 v-model="formData.city"
                 type="text"
                 placeholder="Casablanca"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
             <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2">Prix (€/nuit)</label>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Prix (DH/nuit)</label>
               <input
                 v-model.number="formData.price"
                 type="number"
                 min="0"
                 placeholder="450"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
           </div>
@@ -248,7 +248,7 @@ const handleDeleteListing = (id: number) => {
               v-model="formData.image"
               type="url"
               placeholder="https://example.com/image.jpg"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
@@ -259,7 +259,7 @@ const handleDeleteListing = (id: number) => {
                 v-model.number="formData.beds"
                 type="number"
                 min="1"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
             <div>
@@ -268,7 +268,7 @@ const handleDeleteListing = (id: number) => {
                 v-model.number="formData.baths"
                 type="number"
                 min="1"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
             <div>
@@ -279,7 +279,7 @@ const handleDeleteListing = (id: number) => {
                 min="0"
                 max="5"
                 step="0.1"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
           </div>
@@ -290,14 +290,14 @@ const handleDeleteListing = (id: number) => {
               v-model="formData.description"
               placeholder="Description du logement..."
               rows="4"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
             />
           </div>
 
           <div class="flex gap-4">
             <button
               type="submit"
-              class="flex-1 px-6 py-3 bg-pink-500 text-white rounded-lg font-bold hover:bg-pink-600 transition"
+              class="flex-1 px-6 py-3 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition"
             >
               {{ editingId ? 'Mettre à jour' : 'Ajouter' }}
             </button>
