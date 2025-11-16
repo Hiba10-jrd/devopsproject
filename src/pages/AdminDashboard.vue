@@ -173,6 +173,7 @@ const handleDeleteListing = (id: number) => {
                   ID Réservation
                 </th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">ID Logement</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Propriétaire</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Arrivée</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Départ</th>
                 <th class="px-6 py-3 text-left text-sm font-semibold text-gray-900">Prix total</th>
@@ -182,6 +183,8 @@ const handleDeleteListing = (id: number) => {
               <tr v-for="booking in bookings" :key="booking.id" class="hover:bg-gray-50">
                 <td class="px-6 py-4 text-sm font-medium text-gray-900">#{{ booking.id }}</td>
                 <td class="px-6 py-4 text-sm text-gray-600">#{{ booking.listingId }}</td>
+                <td class="px-6 py-4 text-sm text-gray-600">{{ booking.ownerName }}</td>
+
                 <td class="px-6 py-4 text-sm text-gray-600">
                   {{ new Date(booking.checkInDate).toLocaleDateString('fr-FR') }}
                 </td>
