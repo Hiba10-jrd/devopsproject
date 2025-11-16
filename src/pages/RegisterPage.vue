@@ -63,11 +63,8 @@ const handleKeydown = (e: KeyboardEvent) => {
       <div class="bg-white rounded-lg shadow-lg p-8">
         <!-- Logo -->
         <div class="flex justify-center mb-8">
-          <div
-            class="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg"
-          >
-            <span class="text-white font-bold text-2xl">✕</span>
-          </div>
+          <img src="/images/logo.png" alt="MAISSON Logo" class="h-21 w-20 object-contain">
+
         </div>
 
         <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">S'inscrire</h2>
