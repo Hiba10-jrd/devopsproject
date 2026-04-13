@@ -22,9 +22,15 @@ const handleLogin = async () => {
   isLoading.value = true
 
   try {
-    const success = authStore.login(email.value, password.value)
+    const success = await authStore.loginApi(email.value, password.value)
     if (success) {
-      router.push('/')
+      if (authStore.isAdmin) {
+        router.push('/admin')
+      } else if (authStore.isHost) {
+        router.push('/host')
+      } else {
+        router.push('/')
+      }
     } else {
       errorMessage.value = 'Email ou mot de passe incorrect'
     }
@@ -103,34 +109,7 @@ const handleKeydown = (e: KeyboardEvent) => {
         </form>
 
         <!-- Demo Credentials -->
-        <div class="mt-8 pt-6 border-t border-gray-200">
-          <p class="text-sm text-gray-600 text-center mb-4">Utilisateurs de test :</p>
-          <div class="space-y-2 text-xs bg-gray-50 p-3 rounded">
-            <p class="text-gray-700">
-              <strong>Admin:</strong>
-              <br />
-              Email: admin@test.com
-              <br />
-              Mot de passe: admin
-            </p>
-            <p class="text-gray-700 mt-3">
-              <strong>Utilisateur:</strong>
-              <br />
-              Email: oula@test.com
-              <br />
-              Mot de passe: oula@test.com
-              <br />
-              Email: fati@test.com
-              <br />
-              Mot de passe: fati@test.com
-              <br />
-              Email: houda@test.com
-              <br />
-              Mot de passe: houda@test.com
-            </p>
-          </div>
-        </div>
-
+       
         <!-- Register Link -->
         <div class="mt-6 text-center">
           <p class="text-gray-600">

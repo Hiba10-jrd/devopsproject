@@ -10,14 +10,50 @@ const name = ref('')
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
+const role = ref<'client' | 'host'>('client')
+const phone = ref('')
+const cin = ref('')
+const city = ref('')
+const address = ref('')
+const description = ref('')
 const errorMessage = ref('')
+const successMessage = ref('')
 const isLoading = ref(false)
+const cityOptions = [
+  'Casablanca',
+  'Rabat',
+  'Marrakech',
+  'Fès',
+  'Tanger',
+  'Agadir',
+  'Meknès',
+  'Oujda',
+  'Essaouira',
+  'Chefchaouen',
+  'Tétouan',
+  'Nador',
+  'El Jadida',
+  'Beni Mellal',
+  'Kénitra',
+  'Safi',
+]
 
 const handleRegister = async () => {
   errorMessage.value = ''
+  successMessage.value = ''
 
   if (!name.value || !email.value || !password.value || !confirmPassword.value) {
     errorMessage.value = 'Veuillez remplir tous les champs'
+    return
+  }
+
+  if (!phone.value || !city.value) {
+    errorMessage.value = 'Veuillez renseigner le téléphone et choisir une ville'
+    return
+  }
+
+  if (role.value === 'host' && (!address.value || !description.value)) {
+    errorMessage.value = 'Veuillez remplir toutes les informations spécifiques pour l’hôte'
     return
   }
 
@@ -34,11 +70,24 @@ const handleRegister = async () => {
   isLoading.value = true
 
   try {
-    const success = authStore.register(name.value, email.value, password.value)
-    if (success) {
-      router.push('/')
+    const result = await authStore.registerApi(
+      name.value,
+      email.value,
+      password.value,
+      role.value,
+      {
+        phone: phone.value,
+        cin: cin.value,
+        city: city.value,
+        address: address.value,
+        description: description.value,
+      },
+    )
+    if (result.success) {
+      const redirectPath = role.value === 'host' ? '/host' : '/'
+      router.push(redirectPath)
     } else {
-      errorMessage.value = 'Cet email est déjà utilisé'
+      errorMessage.value = result.message || 'Cet email est déjà utilisé'
     }
   } catch (error) {
     errorMessage.value = 'Une erreur est survenue'
@@ -73,7 +122,6 @@ const handleKeydown = (e: KeyboardEvent) => {
           <p class="text-orange-700 text-sm">{{ errorMessage }}</p>
         </div>
 
-        <!-- Form -->
         <form @submit.prevent="handleRegister" class="space-y-4">
           <div>
             <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -101,6 +149,119 @@ const handleKeydown = (e: KeyboardEvent) => {
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               :disabled="isLoading"
             />
+          </div>
+
+          <div>
+            <p class="block text-sm font-semibold text-gray-700 mb-2">Je m'inscris en tant que</p>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <label
+                class="flex items-center justify-center gap-3 border rounded-lg p-3 cursor-pointer transition hover:border-orange-400"
+                :class="role === 'client' ? 'border-orange-500 bg-orange-50' : 'border-gray-300 bg-white'"
+              >
+                <input
+                  type="radio"
+                  name="role"
+                  value="client"
+                  v-model="role"
+                  class="hidden"
+                />
+                <span class="text-sm font-semibold">Voyageur</span>
+              </label>
+
+              <label
+                class="flex items-center justify-center gap-3 border rounded-lg p-3 cursor-pointer transition hover:border-orange-400"
+                :class="role === 'host' ? 'border-orange-500 bg-orange-50' : 'border-gray-300 bg-white'"
+              >
+                <input
+                  type="radio"
+                  name="role"
+                  value="host"
+                  v-model="role"
+                  class="hidden"
+                />
+                <span class="text-sm font-semibold">Hôte</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="space-y-4 p-4 border border-orange-100 rounded-lg bg-orange-50">
+            <div>
+              <p class="text-sm font-semibold text-gray-700 mb-2">1. Informations personnelles</p>
+              <label for="phone" class="block text-sm text-gray-600 mb-1">Téléphone</label>
+              <input
+                id="phone"
+                v-model="phone"
+                type="tel"
+                placeholder="+212 6X XX XX XX"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                :disabled="isLoading"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm text-gray-600 mb-1">Ville</label>
+              <div class="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
+                <button
+                  v-for="opt in cityOptions"
+                  :key="opt"
+                  type="button"
+                  @click="city = opt"
+                  :class="[
+                    'w-full rounded-lg border px-3 py-2 text-sm transition',
+                    city === opt
+                      ? 'border-orange-600 bg-orange-500 text-white'
+                      : 'border-gray-300 bg-white text-gray-700 hover:border-orange-400',
+                  ]"
+                  :disabled="isLoading"
+                >
+                  {{ opt }}
+                </button>
+              </div>
+              <p v-if="city" class="mt-2 text-xs text-gray-500">Ville sélectionnée : {{ city }}</p>
+            </div>
+          </div>
+
+          <div v-if="role === 'host'" class="space-y-4 p-4 border border-orange-100 rounded-lg bg-orange-50">
+            <div>
+              <p class="text-sm font-semibold text-gray-700 mb-2">2. Informations spécifiques Hôte</p>
+              <div class="grid gap-4">
+                <div>
+                  <label for="cin" class="block text-sm text-gray-600 mb-1">CIN / Carte d’identité <span class="text-gray-400">(optionnel)</span></label>
+                  <input
+                    id="cin"
+                    v-model="cin"
+                    type="text"
+                    placeholder="CIN ou carte d'identité"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    :disabled="isLoading"
+                  />
+                </div>
+
+                <div>
+                  <label for="address" class="block text-sm text-gray-600 mb-1">Adresse</label>
+                  <input
+                    id="address"
+                    v-model="address"
+                    type="text"
+                    placeholder="Adresse complète"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    :disabled="isLoading"
+                  />
+                </div>
+
+                <div>
+                  <label for="description" class="block text-sm text-gray-600 mb-1">Description (bio)</label>
+                  <textarea
+                    id="description"
+                    v-model="description"
+                    rows="3"
+                    placeholder="Je suis un hôte sérieux..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    :disabled="isLoading"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
 
           <div>

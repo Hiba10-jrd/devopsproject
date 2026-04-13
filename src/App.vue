@@ -44,7 +44,6 @@ onMounted(async () => {
               <li><a href="#" class="hover:text-white transition">Emplois</a></li>
             </ul>
           </div>
-
           <div>
             <h4 class="font-semibold mb-4">Support</h4>
             <ul class="text-gray-400 text-sm space-y-2">
@@ -65,7 +64,7 @@ onMounted(async () => {
         </div>
 
         <div class="border-t border-gray-800 pt-8 text-gray-400 text-sm text-center">
-          <p>&copy; 2024 MAISON. Tous droits réservés.</p>
+          <p>&copy; 2025 MAISON.</p>
         </div>
       </div>
     </footer>

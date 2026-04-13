@@ -81,6 +81,20 @@ const handleKeydown = (e: KeyboardEvent) => {
             >
               Admin
             </router-link>
+            <router-link
+              v-else-if="authStore.currentUser?.role === 'client'"
+              to="/client"
+              class="text-gray-700 hover:text-gray-900 transition font-medium"
+            >
+              Mon espace
+            </router-link>
+            <router-link
+              v-else-if="authStore.currentUser?.role === 'host'"
+              to="/host"
+              class="text-gray-700 hover:text-gray-900 transition font-medium"
+            >
+              Mon espace hôte
+            </router-link>
 
             <button @click="handleLogout" class="text-gray-700 hover:text-gray-900 transition font-medium">
               Déconnexion
@@ -148,6 +162,20 @@ const handleKeydown = (e: KeyboardEvent) => {
               class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
             >
               Admin
+            </router-link>
+            <router-link
+              v-else-if="authStore.currentUser?.role === 'client'"
+              to="/client"
+              class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+            >
+              Mon espace
+            </router-link>
+            <router-link
+              v-else-if="authStore.currentUser?.role === 'host'"
+              to="/host"
+              class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+            >
+              Mon espace hôte
             </router-link>
 
             <button

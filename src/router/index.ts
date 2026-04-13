@@ -35,10 +35,22 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/pages/RegisterPage.vue'),
   },
   {
+    path: '/host',
+    name: 'HostDashboard',
+    component: () => import('@/pages/HostDashboard.vue'),
+    meta: { requiresAuth: true, requiresHost: true },
+  },
+  {
+    path: '/client',
+    name: 'ClientDashboard',
+    component: () => import('@/pages/ClientDashboard.vue'),
+    meta: { requiresAuth: true, requiresClient: true },
+  },
+  {
     path: '/admin',
     name: 'Admin',
     component: () => import('@/pages/AdminDashboard.vue'),
-    meta: { requiresAdmin: true },
+    meta: { requiresAuth: true, requiresAdmin: true },
   },
 ]
 
@@ -53,6 +65,10 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !authStore.isLoggedIn) {
     next('/login')
   } else if (to.meta.requiresAdmin && !authStore.isAdmin) {
+    next('/')
+  } else if (to.meta.requiresHost && !authStore.isHost) {
+    next('/')
+  } else if (to.meta.requiresClient && authStore.currentUser?.role !== 'client') {
     next('/')
   } else {
     next()
