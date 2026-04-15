@@ -29,7 +29,7 @@ const handleLogin = async () => {
       } else if (authStore.isHost) {
         router.push('/host')
       } else {
-        router.push('/')
+        router.push('/client')
       }
     } else {
       errorMessage.value = 'Email ou mot de passe incorrect'

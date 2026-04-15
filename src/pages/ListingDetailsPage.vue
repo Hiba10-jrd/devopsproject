@@ -14,10 +14,15 @@ const listing = computed(() => listingsStore.getListingById(listingId))
 const selectedImageIndex = ref(0)
 
 const displayImages = computed(() => {
-  if (listing.value?.images && listing.value.images.length > 0) {
-    return listing.value.images
+  if (!listing.value) {
+    return []
   }
-  return listing.value?.image ? [listing.value.image] : []
+
+  const extraImages = listing.value.images ?? []
+  const primaryImage = listing.value.image ? [listing.value.image] : []
+  const images = [...primaryImage, ...extraImages]
+
+  return images.length > 0 ? images : []
 })
 
 const handleBookNow = () => {

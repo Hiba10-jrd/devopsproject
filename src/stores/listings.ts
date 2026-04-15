@@ -32,6 +32,7 @@ export interface Booking {
   guestPhone?: string
   guestNotes?: string
   paymentMethod?: string
+  ownerId?: number
   ownerName?: string
   ownerPhone?: string
   listingTitle?: string
@@ -52,6 +53,27 @@ export const useListingsStore = defineStore('listings', () => {
   const listings = ref<Listing[]>([])
   const bookings = ref<Booking[]>([])
   const reviews = ref<Review[]>([])
+
+  const mapBookingFromApi = (raw: any): Booking => {
+    const ownerIdRaw = raw.ownerId ?? raw.owner_id
+    return {
+      id: Number(raw.id),
+      listingId: Number(raw.listingId ?? raw.listing_id),
+      userId: Number(raw.userId ?? raw.user_id),
+      checkInDate: String(raw.checkInDate ?? raw.check_in_date),
+      checkOutDate: String(raw.checkOutDate ?? raw.check_out_date),
+      totalPrice: Number(raw.totalPrice ?? raw.total_price ?? 0),
+      createdAt: String(raw.createdAt ?? raw.created_at ?? new Date().toISOString()),
+      guestPhone: raw.guestPhone ?? raw.guest_phone ?? undefined,
+      guestNotes: raw.guestNotes ?? raw.guest_notes ?? undefined,
+      paymentMethod: raw.paymentMethod ?? raw.payment_method ?? undefined,
+      ownerId: ownerIdRaw != null ? Number(ownerIdRaw) : undefined,
+      ownerName: raw.ownerName ?? raw.owner_name ?? undefined,
+      ownerPhone: raw.ownerPhone ?? raw.owner_phone ?? undefined,
+      listingTitle: raw.listingTitle ?? raw.listing_title ?? undefined,
+      status: String(raw.status ?? 'pending'),
+    }
+  }
 
   const loadReviews = () => {
     const saved = localStorage.getItem('maison-reviews')
@@ -124,10 +146,78 @@ export const useListingsStore = defineStore('listings', () => {
       ...booking,
       id: Math.max(...bookings.value.map((b) => b.id), 0) + 1,
       createdAt: new Date().toISOString(),
-      status: booking.status ?? 'pending',
+      status: 'pending',
     }
     bookings.value.push(newBooking)
     return newBooking
+  }
+
+  const addBookingApi = async (
+    booking: Omit<Booking, 'id' | 'createdAt' | 'status'>,
+  ): Promise<Booking> => {
+    const response = await fetch('/api/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        listingId: booking.listingId,
+        userId: booking.userId,
+        checkInDate: booking.checkInDate,
+        checkOutDate: booking.checkOutDate,
+        totalPrice: booking.totalPrice,
+        guestPhone: booking.guestPhone,
+        guestNotes: booking.guestNotes,
+        paymentMethod: booking.paymentMethod,
+      }),
+    })
+
+    if (!response.ok) {
+      let message = 'Erreur lors de la reservation'
+      try {
+        const body = await response.json()
+        message = body?.message || message
+      } catch {
+        // ignore json parse error, fallback to generic message
+      }
+      throw new Error(message)
+    }
+
+    const raw = await response.json()
+    const createdBooking = mapBookingFromApi({
+      ...raw,
+      ownerId: booking.ownerId,
+      ownerName: booking.ownerName,
+      ownerPhone: booking.ownerPhone,
+      listingTitle: booking.listingTitle,
+    })
+    bookings.value.unshift(createdBooking)
+    return createdBooking
+  }
+
+  const mergeBookings = (newBookings: Booking[]) => {
+    const existingWithoutNew = bookings.value.filter((booking) => !newBookings.some((newBooking) => newBooking.id === booking.id))
+    bookings.value = [...newBookings, ...existingWithoutNew]
+  }
+
+  const loadBookingsByUserApi = async (userId: number) => {
+    const response = await fetch(`/api/bookings/user/${userId}`)
+    if (!response.ok) {
+      throw new Error('Impossible de charger les reservations')
+    }
+    const rows = await response.json()
+    const userBookings = (rows as any[]).map(mapBookingFromApi)
+    mergeBookings(userBookings)
+    return userBookings
+  }
+
+  const loadBookingsByOwnerApi = async (ownerId: number) => {
+    const response = await fetch(`/api/bookings/owner/${ownerId}`)
+    if (!response.ok) {
+      throw new Error('Impossible de charger les reservations de l’hôte')
+    }
+    const rows = await response.json()
+    const ownerBookings = (rows as any[]).map(mapBookingFromApi)
+    mergeBookings(ownerBookings)
+    return ownerBookings
   }
 
   const updateBookingStatus = (id: number, status: string) => {
@@ -180,6 +270,9 @@ export const useListingsStore = defineStore('listings', () => {
     updateListing,
     deleteListing,
     addBooking,
+    addBookingApi,
+    loadBookingsByUserApi,
+    loadBookingsByOwnerApi,
     updateBookingStatus,
     getBookingsByUser,
     getAllBookings,

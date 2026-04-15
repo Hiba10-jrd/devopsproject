@@ -73,7 +73,14 @@ router.post('/', async (req, res) => {
   )
 
   const insertId = (result as any).insertId
-  const [rows] = await pool.query('SELECT * FROM bookings WHERE id = ? LIMIT 1', [insertId])
+  const [rows] = await pool.query(
+    `SELECT b.*, l.owner_id, l.owner_name, l.owner_phone, l.title AS listing_title
+     FROM bookings b
+     JOIN listings l ON l.id = b.listing_id
+     WHERE b.id = ?
+     LIMIT 1`,
+    [insertId],
+  )
   return res.status(201).json((rows as any)[0])
 })
 

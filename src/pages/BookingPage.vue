@@ -59,7 +59,7 @@ const handleConfirmBooking = async () => {
   isSubmitting.value = true
 
   try {
-    const booking = listingsStore.addBooking({
+    const bookingPayload = {
       listingId: listing.value.id,
       userId: authStore.currentUser.id,
       checkInDate: checkInDate.value,
@@ -68,18 +68,28 @@ const handleConfirmBooking = async () => {
       guestPhone: guestPhone.value,
       guestNotes: guestNotes.value,
       paymentMethod: paymentMethod.value,
+      ownerId: listing.value.ownerId,
       ownerName: listing.value.ownerName,
       ownerPhone: listing.value.ownerPhone,
       listingTitle: listing.value.title,
-    })
+    }
+
+    let booking
+    try {
+      booking = await listingsStore.addBookingApi(bookingPayload)
+    } catch (apiError) {
+      console.warn('API reservation failed, fallback local store:', apiError)
+      booking = listingsStore.addBooking(bookingPayload)
+    }
 
     alert(
-      'Réservation confirmée avec succès!\n\nNuméro de confirmation: ' +
+      'Reservation confirmee avec succes!\n\nNumero de confirmation: ' +
         booking.id +
-        '\n\nVous pouvez maintenant contacter le propriétaire au: ' +
+        '\nStatut: En attente' +
+        '\n\nVous pouvez maintenant contacter le proprietaire au: ' +
         listing.value.ownerPhone,
     )
-    router.push('/')
+    router.push('/client')
   } catch (error) {
     console.error('Booking failed:', error)
     alert('Une erreur est survenue lors de la réservation')
@@ -339,3 +349,4 @@ onMounted(() => {
     </div>
   </div>
 </template>
+

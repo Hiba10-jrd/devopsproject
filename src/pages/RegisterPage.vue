@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
-const router = useRouter()
 const authStore = useAuthStore()
 
 const name = ref('')
@@ -18,6 +16,7 @@ const address = ref('')
 const description = ref('')
 const errorMessage = ref('')
 const successMessage = ref('')
+const registrationValidated = ref(false)
 const isLoading = ref(false)
 const cityOptions = [
   'Casablanca',
@@ -84,8 +83,10 @@ const handleRegister = async () => {
       },
     )
     if (result.success) {
-      const redirectPath = role.value === 'host' ? '/host' : '/'
-      router.push(redirectPath)
+      successMessage.value = result.message || 'Compte cree avec succes.'
+      registrationValidated.value = true
+      password.value = ''
+      confirmPassword.value = ''
     } else {
       errorMessage.value = result.message || 'Cet email est déjà utilisé'
     }
@@ -122,7 +123,23 @@ const handleKeydown = (e: KeyboardEvent) => {
           <p class="text-orange-700 text-sm">{{ errorMessage }}</p>
         </div>
 
-        <form @submit.prevent="handleRegister" class="space-y-4">
+        <div
+          v-if="registrationValidated"
+          class="mb-4 rounded-lg border border-green-200 bg-green-50 p-5 text-center"
+        >
+          <p class="text-base font-semibold text-green-800">Creation de compte validee</p>
+          <p class="mt-2 text-sm text-green-700">
+            {{ successMessage || 'Compte cree avec succes. Connectez-vous pour continuer.' }}
+          </p>
+          <router-link
+            to="/login"
+            class="mt-4 inline-flex rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white transition hover:bg-orange-600"
+          >
+            Se connecter
+          </router-link>
+        </div>
+
+        <form v-if="!registrationValidated" @submit.prevent="handleRegister" class="space-y-4">
           <div>
             <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
               Nom complet
@@ -304,13 +321,13 @@ const handleKeydown = (e: KeyboardEvent) => {
         </form>
 
         <!-- Terms -->
-        <p class="text-xs text-gray-500 text-center mt-4">
+        <p v-if="!registrationValidated" class="text-xs text-gray-500 text-center mt-4">
           En vous inscrivant, vous acceptez nos conditions d'utilisation et notre politique de
           confidentialité.
         </p>
 
         <!-- Login Link -->
-        <div class="mt-6 text-center">
+        <div v-if="!registrationValidated" class="mt-6 text-center">
           <p class="text-gray-600">
             Vous avez déjà un compte ?
             <router-link to="/login" class="text-orange-500 font-semibold hover:text-orange-600">

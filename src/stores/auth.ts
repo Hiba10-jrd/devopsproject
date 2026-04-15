@@ -79,8 +79,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     users.value.push(newUser)
-    currentUser.value = newUser
-    localStorage.setItem('currentUser', JSON.stringify(newUser))
     return true
   }
 
@@ -128,16 +126,21 @@ export const useAuthStore = defineStore('auth', () => {
         }),
       })
       if (!response.ok) {
-        const body = await response.json()
-        return { success: false, message: body?.message || 'Erreur d’inscription' }
+        let body: { message?: string } | null = null
+        try {
+          body = await response.json()
+        } catch {
+          body = null
+        }
+        return { success: false, message: body?.message || 'Erreur d inscription' }
       }
-      const user = await response.json()
-      currentUser.value = user
-      localStorage.setItem('currentUser', JSON.stringify(user))
-      return { success: true }
+      return {
+        success: true,
+        message: 'Compte cree avec succes. Connectez-vous pour continuer.',
+      }
     } catch (error) {
       console.error(error)
-      return { success: false, message: 'Erreur réseau' }
+      return { success: false, message: 'Erreur reseau' }
     }
   }
 
@@ -173,3 +176,4 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
   }
 })
+

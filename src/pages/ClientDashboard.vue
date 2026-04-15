@@ -10,11 +10,48 @@ const listingsStore = useListingsStore()
 
 const userId = computed(() => authStore.currentUser?.id ?? 0)
 const userName = computed(() => authStore.currentUser?.name ?? '')
-const userBookings = computed(() => listingsStore.getBookingsByUser(userId.value))
+const isLoadingBookings = ref(false)
+
+const normalizeBookingStatus = (status?: string): 'pending' | 'accepted' | 'refused' => {
+  const normalized = (status ?? 'pending').toLowerCase()
+  if (['paid', 'confirmed', 'accepted', 'approved'].includes(normalized)) {
+    return 'accepted'
+  }
+  if (['cancelled', 'canceled', 'rejected', 'refused', 'declined'].includes(normalized)) {
+    return 'refused'
+  }
+  return 'pending'
+}
+
+const getBookingStatusLabel = (status?: string) => {
+  const normalized = normalizeBookingStatus(status)
+  if (normalized === 'accepted') return 'Acceptee'
+  if (normalized === 'refused') return 'Refusee'
+  return 'En attente'
+}
+
+const getBookingStatusBadgeClass = (status?: string) => {
+  const normalized = normalizeBookingStatus(status)
+  if (normalized === 'accepted') {
+    return 'bg-green-100 text-green-700'
+  }
+  if (normalized === 'refused') {
+    return 'bg-red-100 text-red-700'
+  }
+  return 'bg-amber-100 text-amber-700'
+}
+
+const userBookings = computed(() =>
+  [...listingsStore.getBookingsByUser(userId.value)].sort((a, b) => {
+    const dateA = new Date(a.createdAt).getTime()
+    const dateB = new Date(b.createdAt).getTime()
+    return dateB - dateA
+  }),
+)
 const bookingStatusCounts = computed(() => {
-  const counts = { pending: 0, confirmed: 0, cancelled: 0 }
+  const counts = { pending: 0, accepted: 0, refused: 0 }
   userBookings.value.forEach((booking) => {
-    const status = (booking.status ?? 'pending').toLowerCase()
+    const status = normalizeBookingStatus(booking.status)
     if (status in counts) {
       counts[status as keyof typeof counts] += 1
     }
@@ -24,7 +61,7 @@ const bookingStatusCounts = computed(() => {
 const totalSpent = computed(() => userBookings.value.reduce((sum, booking) => sum + booking.totalPrice, 0))
 const totalReviews = computed(() => listingsStore.getReviewsByUser(userId.value).length)
 const userReviews = computed(() => listingsStore.getReviewsByUser(userId.value))
-const reviewListingId = ref<number | null>(listingsStore.listings.value[0]?.id ?? null)
+const reviewListingId = ref<number | null>(listingsStore.listings[0]?.id ?? null)
 const reviewRating = ref(5)
 const reviewComment = ref('')
 
@@ -94,7 +131,17 @@ const goToSearch = () => {
 onMounted(() => {
   if (!authStore.isLoggedIn || authStore.currentUser?.role !== 'client') {
     router.push('/login')
+    return
   }
+  isLoadingBookings.value = true
+  listingsStore
+    .loadBookingsByUserApi(userId.value)
+    .catch((error) => {
+      console.error('Erreur chargement reservations client:', error)
+    })
+    .finally(() => {
+      isLoadingBookings.value = false
+    })
 })
 </script>
 
@@ -180,7 +227,7 @@ onMounted(() => {
             <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
               <div>
                 <h2 class="text-2xl font-semibold text-slate-900">Mes réservations</h2>
-                <p class="text-sm text-slate-600">Suivez vos séjours en attente, confirmés ou annulés.</p>
+                <p class="text-sm text-slate-600">Suivez vos séjours en attente, acceptes ou refuses.</p>
               </div>
             </div>
 
@@ -190,16 +237,20 @@ onMounted(() => {
                 <p class="mt-4 text-3xl font-bold text-slate-900">{{ bookingStatusCounts.pending }}</p>
               </div>
               <div class="rounded-3xl bg-slate-50 p-6 border border-slate-200">
-                <p class="text-sm text-slate-500">Confirmées</p>
-                <p class="mt-4 text-3xl font-bold text-slate-900">{{ bookingStatusCounts.confirmed }}</p>
+                <p class="text-sm text-slate-500">Acceptees</p>
+                <p class="mt-4 text-3xl font-bold text-slate-900">{{ bookingStatusCounts.accepted }}</p>
               </div>
               <div class="rounded-3xl bg-slate-50 p-6 border border-slate-200">
-                <p class="text-sm text-slate-500">Annulées</p>
-                <p class="mt-4 text-3xl font-bold text-slate-900">{{ bookingStatusCounts.cancelled }}</p>
+                <p class="text-sm text-slate-500">Refusees</p>
+                <p class="mt-4 text-3xl font-bold text-slate-900">{{ bookingStatusCounts.refused }}</p>
               </div>
             </div>
 
-            <div v-if="userBookings.length > 0" class="overflow-x-auto rounded-3xl border border-slate-200 bg-slate-50 p-4">
+            <div v-if="isLoadingBookings" class="rounded-3xl border border-slate-200 bg-slate-50 p-8 text-center mb-4">
+              <p class="text-slate-600">Chargement des reservations...</p>
+            </div>
+
+            <div v-else-if="userBookings.length > 0" class="overflow-x-auto rounded-3xl border border-slate-200 bg-slate-50 p-4">
               <table class="min-w-full text-left border-separate border-spacing-y-3">
                 <thead>
                   <tr class="text-slate-500 text-sm uppercase tracking-[0.15em]">
@@ -216,7 +267,14 @@ onMounted(() => {
                     <td class="px-4 py-4 text-slate-600">{{ new Date(booking.checkInDate).toLocaleDateString('fr-FR') }}</td>
                     <td class="px-4 py-4 text-slate-600">{{ new Date(booking.checkOutDate).toLocaleDateString('fr-FR') }}</td>
                     <td class="px-4 py-4 font-semibold text-slate-900">{{ booking.totalPrice }} DH</td>
-                    <td class="px-4 py-4 text-slate-600 capitalize">{{ booking.status ?? 'pending' }}</td>
+                    <td class="px-4 py-4">
+                      <span
+                        class="inline-flex rounded-full px-3 py-1 text-xs font-semibold"
+                        :class="getBookingStatusBadgeClass(booking.status)"
+                      >
+                        {{ getBookingStatusLabel(booking.status) }}
+                      </span>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -458,3 +516,4 @@ onMounted(() => {
     </div>
   </div>
 </template>
+

@@ -28,6 +28,9 @@ const formData = ref<Partial<Listing>>({
 
 const imagesRaw = ref('')
 const amenitiesRaw = ref('')
+const formError = ref('')
+const imagePreview = ref('')
+const otherImagePreviews = ref<string[]>([])
 
 const profileForm = ref({
   name: authStore.currentUser?.name ?? '',
@@ -47,6 +50,9 @@ const hostListings = computed(() =>
 
 const hostBookings = computed(() =>
   listingsStore.bookings.filter((booking) => {
+    if (booking.ownerId && booking.ownerId === hostId.value) {
+      return true
+    }
     if (booking.ownerName && booking.ownerName === hostName.value) {
       return true
     }
@@ -57,6 +63,92 @@ const hostBookings = computed(() =>
 const totalRevenue = computed(() => hostBookings.value.reduce((sum, booking) => sum + booking.totalPrice, 0))
 const totalBookings = computed(() => hostBookings.value.length)
 const totalListings = computed(() => hostListings.value.length)
+
+const normalizeBookingStatus = (status?: string): 'pending' | 'accepted' | 'refused' => {
+  const normalized = (status ?? 'pending').toLowerCase()
+  if (['paid', 'confirmed', 'accepted', 'approved'].includes(normalized)) {
+    return 'accepted'
+  }
+  if (['cancelled', 'canceled', 'rejected', 'refused', 'declined'].includes(normalized)) {
+    return 'refused'
+  }
+  return 'pending'
+}
+
+const getBookingStatusLabel = (status?: string) => {
+  const normalized = normalizeBookingStatus(status)
+  if (normalized === 'accepted') return 'Acceptée'
+  if (normalized === 'refused') return 'Refusée'
+  return 'En attente'
+}
+
+const getBookingStatusBadgeClass = (status?: string) => {
+  const normalized = normalizeBookingStatus(status)
+  if (normalized === 'accepted') {
+    return 'bg-green-100 text-green-700'
+  }
+  if (normalized === 'refused') {
+    return 'bg-red-100 text-red-700'
+  }
+  return 'bg-amber-100 text-amber-700'
+}
+
+const handleApproveBooking = (bookingId: number) => {
+  listingsStore.updateBookingStatus(bookingId, 'accepted')
+}
+
+const handleRejectBooking = (bookingId: number) => {
+  listingsStore.updateBookingStatus(bookingId, 'refused')
+}
+
+const readFileAsDataUrl = (file: File) => {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result)
+      } else {
+        reject(new Error('Erreur de lecture de l’image'))
+      }
+    }
+    reader.onerror = () => reject(new Error('Erreur de lecture de l’image'))
+    reader.readAsDataURL(file)
+  })
+}
+
+const handlePrimaryImageChange = async (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) {
+    return
+  }
+  try {
+    const dataUrl = await readFileAsDataUrl(file)
+    imagePreview.value = dataUrl
+    formData.value.image = dataUrl
+  } catch (error) {
+    formError.value = 'Impossible de charger l’image principale.'
+  }
+}
+
+const handleOtherImagesChange = async (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const files = input.files ? Array.from(input.files) : []
+  const previews: string[] = []
+  for (const file of files) {
+    try {
+      previews.push(await readFileAsDataUrl(file))
+    } catch {
+      // ignore invalid files
+    }
+  }
+  otherImagePreviews.value = previews
+}
+
+const buildExtraImages = () => {
+  const urlImages = String(imagesRaw.value).split(',').map((value) => value.trim()).filter(Boolean)
+  return [...otherImagePreviews.value, ...urlImages]
+}
 
 const resetForm = () => {
   formData.value = {
@@ -75,6 +167,9 @@ const resetForm = () => {
   }
   imagesRaw.value = ''
   amenitiesRaw.value = ''
+  imagePreview.value = ''
+  otherImagePreviews.value = []
+  formError.value = ''
   editingId.value = null
 }
 
@@ -82,6 +177,9 @@ const handleEditListing = (listing: Listing) => {
   formData.value = { ...listing }
   imagesRaw.value = (listing.images ?? []).join(', ')
   amenitiesRaw.value = (listing.amenities ?? []).join(', ')
+  imagePreview.value = listing.image ?? ''
+  otherImagePreviews.value = listing.images ?? []
+  formError.value = ''
   editingId.value = listing.id
   activeTab.value = 'listings'
 }
@@ -93,8 +191,17 @@ const handleDeleteListing = (id: number) => {
 }
 
 const handleAddListing = () => {
+  formError.value = ''
+
   if (!formData.value.title || !formData.value.city || !formData.value.price || !formData.value.image || !formData.value.description) {
-    alert('Veuillez remplir tous les champs obligatoires du logement.')
+    formError.value = 'Veuillez remplir tous les champs obligatoires du logement.'
+    return
+  }
+
+  const extraImages = buildExtraImages()
+  const totalImages = [formData.value.image, ...extraImages]
+  if (totalImages.length < 3) {
+    formError.value = 'Veuillez fournir au moins 3 images (image principale + au moins 2 autres).'
     return
   }
 
@@ -105,7 +212,7 @@ const handleAddListing = () => {
 
   const listingPayload = {
     ...formData.value,
-    images: String(imagesRaw.value).split(',').map((value) => value.trim()).filter(Boolean),
+    images: extraImages,
     amenities: String(amenitiesRaw.value).split(',').map((value) => value.trim()).filter(Boolean),
     ownerId,
     ownerName,
@@ -141,9 +248,18 @@ const handleSaveProfile = () => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (!authStore.isLoggedIn || !authStore.isHost) {
     router.push('/login')
+    return
+  }
+
+  if (hostId.value) {
+    try {
+      await listingsStore.loadBookingsByOwnerApi(hostId.value)
+    } catch (error) {
+      console.error('Impossible de charger les réservations de l’hôte:', error)
+    }
   }
 })
 </script>
@@ -317,20 +433,42 @@ onMounted(() => {
                 <div>
                   <label class="block text-sm font-semibold text-slate-700 mb-2">Image principale</label>
                   <input
+                    type="file"
+                    accept="image/*"
+                    @change="handlePrimaryImageChange"
+                    class="w-full rounded-3xl border border-slate-200 px-4 py-3 outline-none file:border-0 file:bg-orange-100 file:px-3 file:py-2 file:text-orange-700 file:rounded-full focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                  />
+                  <input
                     v-model="formData.image"
                     type="url"
-                    placeholder="https://..."
-                    class="w-full rounded-3xl border border-slate-200 px-4 py-3 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                    placeholder="https://... (ou chargez une image)"
+                    class="mt-3 w-full rounded-3xl border border-slate-200 px-4 py-3 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                   />
+                  <div v-if="imagePreview" class="mt-3 rounded-3xl overflow-hidden border border-slate-200">
+                    <img :src="imagePreview" alt="Aperçu image principale" class="w-full h-48 object-cover" />
+                  </div>
                 </div>
                 <div>
-                  <label class="block text-sm font-semibold text-slate-700 mb-2">Autres images (URLs séparées par des virgules)</label>
+                  <label class="block text-sm font-semibold text-slate-700 mb-2">Autres images</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    @change="handleOtherImagesChange"
+                    class="w-full rounded-3xl border border-slate-200 px-4 py-3 outline-none file:border-0 file:bg-orange-100 file:px-3 file:py-2 file:text-orange-700 file:rounded-full focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                  />
                   <input
                     v-model="imagesRaw"
                     type="text"
-                    placeholder="https://..., https://..."
-                    class="w-full rounded-3xl border border-slate-200 px-4 py-3 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                    placeholder="URLs séparées par des virgules"
+                    class="mt-3 w-full rounded-3xl border border-slate-200 px-4 py-3 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
                   />
+                  <p class="mt-2 text-sm text-slate-500">Image principale + au moins 2 autres images requises pour publier l’annonce.</p>
+                  <div v-if="otherImagePreviews.length > 0" class="mt-3 grid grid-cols-3 gap-3">
+                    <div v-for="(preview, index) in otherImagePreviews" :key="index" class="overflow-hidden rounded-2xl border border-slate-200">
+                      <img :src="preview" :alt="`Aperçu image ${index + 1}`" class="w-full h-24 object-cover" />
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <label class="block text-sm font-semibold text-slate-700 mb-2">Équipements (virgules)</label>
@@ -368,6 +506,9 @@ onMounted(() => {
                   />
                 </div>
               </div>
+              <div v-if="formError" class="mb-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {{ formError }}
+              </div>
               <button
                 @click="handleAddListing"
                 class="mt-6 rounded-full bg-orange-500 px-6 py-3 font-semibold text-white hover:bg-orange-600 transition"
@@ -393,6 +534,8 @@ onMounted(() => {
                     <th class="px-4 py-3">Arrivée</th>
                     <th class="px-4 py-3">Départ</th>
                     <th class="px-4 py-3">Montant</th>
+                    <th class="px-4 py-3">Statut</th>
+                    <th class="px-4 py-3 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -403,6 +546,30 @@ onMounted(() => {
                     <td class="px-4 py-4 text-slate-600">{{ new Date(booking.checkInDate).toLocaleDateString('fr-FR') }}</td>
                     <td class="px-4 py-4 text-slate-600">{{ new Date(booking.checkOutDate).toLocaleDateString('fr-FR') }}</td>
                     <td class="px-4 py-4 font-semibold text-slate-900">{{ booking.totalPrice }} DH</td>
+                    <td class="px-4 py-4">
+                      <span
+                        class="inline-flex rounded-full px-3 py-1 text-xs font-semibold"
+                        :class="getBookingStatusBadgeClass(booking.status)"
+                      >
+                        {{ getBookingStatusLabel(booking.status) }}
+                      </span>
+                    </td>
+                    <td class="px-4 py-4 text-right space-x-2">
+                      <button
+                        v-if="normalizeBookingStatus(booking.status) === 'pending'"
+                        @click="handleApproveBooking(booking.id)"
+                        class="rounded-full bg-green-100 px-3 py-2 text-green-700 hover:bg-green-200 transition"
+                      >
+                        Accepter
+                      </button>
+                      <button
+                        v-if="normalizeBookingStatus(booking.status) === 'pending'"
+                        @click="handleRejectBooking(booking.id)"
+                        class="rounded-full bg-red-100 px-3 py-2 text-red-700 hover:bg-red-200 transition"
+                      >
+                        Refuser
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>
