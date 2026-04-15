@@ -5,9 +5,9 @@ dotenv.config()
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '3306', 10),
+  port: parseInt(process.env.DB_PORT || '3307', 10),
   user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
+  password: process.env.DB_PASSWORD || 'Root@1234',
   database: process.env.DB_NAME || 'fusion_db',
   waitForConnections: true,
   connectionLimit: 10,
