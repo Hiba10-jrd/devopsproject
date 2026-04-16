@@ -2,17 +2,15 @@ FROM node:18
 
 WORKDIR /app
 
-# Copier package.json
-COPY package*.json ./
+COPY server/package*.json ./
 
 RUN npm install
+RUN npm install -g typescript
 
-# Copier tout le code backend
-COPY . .
+COPY server ./
 
-# build TypeScript (si tu utilises tsc)
-RUN npm run build
+RUN tsc
 
 EXPOSE 5000
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]

@@ -251,5 +251,20 @@ async function safeAlter(query: string): Promise<void> {
     throw error;
   }
 }
+const connectWithRetry = () => {
+  console.log("Connexion à la base de données...");
 
+  pool
+    .getConnection()
+    .then((conn) => {
+      console.log("✅ Connecté à MySQL");
+      conn.release();
+    })
+    .catch((err) => {
+      console.log("⏳ MySQL pas prêt, retry dans 5 secondes...");
+      setTimeout(connectWithRetry, 5000);
+    });
+};
+
+connectWithRetry();
 export default pool;
