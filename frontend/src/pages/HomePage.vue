@@ -35,7 +35,7 @@ const allListings = listingsStore.listings
             Explorez des logements uniques
           </h1>
           <p class="text-lg text-gray-600">
-            Trouvez votre destination idéale parmi des milliers d'offres
+            Trouvez votre destination idéale parmi des milliers d'offres (yarbi tsda9)
           </p>
         </div>
 
