@@ -32,7 +32,7 @@ const allListings = listingsStore.listings
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
           <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Explorez des logements uniques(l3alamiyaa)
+            Explorez des logements uniques
           </h1>
           <p class="text-lg text-gray-600">
             Trouvez votre destination idéale parmi des milliers d'offres 
